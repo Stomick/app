@@ -1,0 +1,8 @@
+{
+  "name": "letmesportapp",
+  "app_id": "806a72dd",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

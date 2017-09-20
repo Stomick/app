@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>Забронируйте время</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50 class="nav active">Шаг 1</ion-col>
+        <ion-col width-50 class="nav active">Шаг 2</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="">
+
+  <button (click)="openbrowser()" ion-button class="button"> Оплатить в браузере</button>
+  <button (click)="goToBooking()" ion-button> Перейти к бронированию</button>
+
+  <form class="form" [formGroup]="payForm" (submit)="formSubmit(from.value)">
+
+    <h4 class="info-text">Данные вашей карты нужны для подтверждения бронирования.
+      Сразу после обработки платежа мы вышлем Вам подтверждение заказа</h4>
+
+    <div class="input-container input-container__number">
+      <input #cardNumber
+             type="text" placeholder="Номер банковской карты" [textMask]="{mask: maskCardNumber}"
+             [formControl]="payForm.controls['cardNumber']"
+             (keyup)="inputChange('cardNumber' , cardNumber.value)">
+    </div>
+
+    <div class="input-container input-container__year">
+      <input #date type="text" placeholder="Месяц/Год" [textMask]="{mask: maskDate}"
+             [formControl]="payForm.controls['date']"
+             (keyup)="inputChange('date' , date.value)">
+    </div>
+    <div class="input-container input-container__cvv">
+      <input #name type="text" placeholder="Имя Фамилия"
+             [formControl]="payForm.controls['name']"
+             (keyup)="inputChange('name' , name.value)">
+    </div>
+
+    <div class="garantee">
+      <img class="garantee__shield" src="assets/images/varaity.png">
+      <img src="assets/images/verified-visa.png">
+      <img src="assets/images/master-card.png">
+    </div>
+
+    <div class="submit-content">
+      <input #submit
+             [id]="'submit'" name="submit" value="submit" type="checkbox"
+             [formControl]="payForm.controls['submit']"
+             (keyup)="inputChange('submit' , submit.value)">
+      <label [attr.for]="'submit'">Совершая бронирование, я принимаю условия</label>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer class="order-submit-footer">
+  <button *ngIf="payForm.valid" class="order-submit-footer__button" (click)="formSubmit()" ion-button>Забронировать за
+  </button>
+</ion-footer>

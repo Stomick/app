@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar color="blue">
+   <ion-title center><img class="header-logo" src="assets/images/logo.png"></ion-title>
+
+    <ion-buttons end>
+      <button (click)="goToDashboard()" ion-button icon-only>
+        <ion-icon ios="ios-contact" md="md-contact" [color]="light" right></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <section class="main-page">
+    <button ion-button (click)="goToSport()">Найти теннесные клубы</button>
+  </section>
+</ion-content>

@@ -1,0 +1,153 @@
+<ion-content>
+  <ion-navbar class="shadow">
+    <ion-title text-center *ngIf="place != null">{{place.name}}</ion-title>
+    <ion-buttons end>
+      <button (click)="goToDashboard()" ion-button icon-only>
+        <ion-icon class="white" ios="ios-contact" md="md-contact" right></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <div class="no-content__wrap" *ngIf="place == null">
+    <div>
+      <p class="no-content__text">В Спорт центре нет свободных мест на заданное время</p>
+      <button ion-button full (click)="returnResults()">К предыдущему результату</button>
+    </div>
+  </div>
+
+  <div *ngIf="place != null">
+    <div class="image-container">
+      <ion-slides [pager]="true">
+        <ion-slide *ngFor="let img of place.images">
+          <div class="image" [ngStyle]="{'background-image':'url(' + img + ')'}"></div>
+        </ion-slide>
+      </ion-slides>
+
+      <div class="image__logo"><img [src]="place.imageLogo"></div>
+      <p class="distance" *ngIf="place.distance"> {{place.distance | distanceKmPipe}} км.</p>
+    </div>
+
+    <div class="place-info">
+      <h3 class="place-info__head">{{place.name}}</h3>
+
+      <p class="place-info__text" *ngIf="!place.roundTheClock">
+        <!--<ion-icon name="ios-time-outline" color="primary"></ion-icon>-->
+        <!--<i class="fa fa-map-marker" color="primary" aria-hidden="true"></i>-->
+        <i class="img-icon img-icon_clock"></i>
+        Время работы: с {{place.startWorkTime}} до
+        {{place.endWorkTime}}
+      </p>
+      <p class="place-info__text" *ngIf="place.roundTheClock">
+        <!--<ion-icon name="ios-time-outline" color="primary"></ion-icon>-->
+        <i class="img-icon img-icon_clock"></i>
+        Время работы: Круглосуточно
+      </p>
+
+      <p class="place-info__text" (click)="placeOnMap()">
+        <!--<ion-icon name="ios-navigate-outline" color="primary"></ion-icon>-->
+        <i class="img-icon img-icon_map-point"></i>
+        <span class="place-info__text_underline">Адрес: {{place.address}} </span>
+      </p>
+
+      <div class="description-container">
+        <p class="place-info__description" *ngIf="!description" (click)="description = !description">
+          {{place.descriptionShort}} <span
+          class="place-info__text_black">Развернуть</span></p>
+        <p class="place-info__description" *ngIf="description" (click)="description = !description">
+          {{place.description}} <span
+          class="place-info__text_black">Свернуть</span></p>
+      </div>
+      <section class="advantages" *ngIf="place.advantages!= null && place.advantages.length > 0">
+        <div class="advantages__item" *ngFor="let a of place.advantages">
+          <p class="advantages__img-container"><img [src]="a.icon"></p>
+          <p class="advantages__text">{{a.name}}</p>
+        </div>
+      </section>
+
+      <form #f="ngForm" (submit)="formSubmit(f.value)" class="radio">
+        <div class="place-info__time">
+          <h3 class="place-info__time-head">Выберите дату и время бронирования</h3>
+          <ion-grid>
+            <ion-row>
+              <ion-col width-100>
+                <ion-datetime #datepicker 
+                              (ionChange)="dateChange(); calculateTimes(date, playingFields[0])"
+                              displayFormat="DD MMMM"
+                              [min]="minDate"
+                              [max]="maxDate"
+                              [monthNames]="monthNames"
+                              [dayShortNames]="dayShortNames"
+                              [dayNames]="dayNames"
+                              cancelText="Отмена"
+                              doneText="Выбрать"
+                              [(ngModel)]="date"
+                              [ngModelOptions]="{standalone: true}">
+                </ion-datetime>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col width-100>
+                <ion-select 
+                  (ionChange)="dateChange()" 
+                  [(ngModel)]="time" 
+                  [ngModelOptions]="{standalone: true}"
+                  cancelText="Отмена" 
+                  doneText="Выбрать">
+                  <ion-option *ngFor="let item of times" [value]="item">{{item}}</ion-option>
+                </ion-select>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+          <!-- <button ion-button full (click)="chooseDate($event, datepicker)">Выбрать время и дату</button> -->
+          <!-- <p class="data-change" (click)="datepicker.open()">Выбрать время и дату</p> -->
+        </div>
+
+        <h3 class="place-info__playground">Доступные для бронирования корты</h3>
+        <div class="form-group">
+          <div class="radio" *ngFor="let pg of place.playingFields">
+            <input (ionChange)="calculateTimes(date, playingFields[0])"
+                   [id]="pg.id" type="radio" name="playground"
+                   [(ngModel)]="bookSelect.playground"
+                   (change)="updatePrice()"
+                   [value]="pg.name">
+            <label [attr.for]="pg.id">
+              {{pg.name}}
+              <br>
+              <strong>{{pg.price}}
+                <!--<i class="fa fa-rub" aria-hidden="true"></i>-->
+                <span>руб.</span>/час</strong>
+            </label>
+          </div>
+        </div>
+        <h3 class="advantages__head">Дополнительные услуги</h3>
+        <div class="form-group">
+          <div class="checkbox" *ngFor="let service of place.services">
+            <input [id]="service.name" type="checkbox"
+                   [name]="service.name"
+                   (change)="updatePrice()"
+                   [(ngModel)]="bookSelect[service.name]">
+            <label [attr.for]="service.name">
+              {{service.name}} <br> <strong>{{service.price}}
+              <span>руб.</span>/час</strong>
+              <p class="advantages__description"> {{service.description}}</p>
+            </label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>
+<ion-footer>
+  <div class="footer-wrap footer-border">
+    <div class="footer__col">
+      <p class="footer__text">Общая сумма</p>
+      <p class="footer__text footer__text_price">{{price}}
+        <!--<i class="fa fa-rub" aria-hidden="true"></i>-->
+        <span>руб.</span>
+      </p>
+    </div>
+    <div class="footer__col">
+      <button ion-button full class="next-button" (keydown)="updatePrice()" (click)="formSubmit()">Забронировать</button>
+    </div>
+  </div>
+</ion-footer>

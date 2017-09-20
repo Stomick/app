@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center *ngIf="book != null && book.submit !== 0">Информация о бронировании</ion-title>
+    <ion-title text-center *ngIf="book != null && book.submit === 0">Подтверждение бронирования</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="book != null">
+    <div *ngIf="book.submit !== 0" class="book-info">
+      <div #contentnode>
+        <div class="book-info__head book-info__head_ok">
+          <div class="book-info__head_col-1">
+            <img class="image-info" src="assets/images/booking-ok.png">
+          </div>
+          <div class="book-info__head_col-2">
+            <h2 class="info info_green">Ваше бронирование подтверждено</h2>
+            <p class="book-info__text book-info__text_book book-info__text_bold">Номер бронирования: {{book.id}}</p>
+          </div>
+        </div>
+
+        <p class="book-info__text book-info__text_sport-center">{{book.sportCenter}}</p>
+        <p class="book-info__text">
+          <!--<ion-icon name="ios-time-outline" color="primary"></ion-icon>-->
+          <i class="img-icon img-icon_clock"></i>
+          Время посещения: {{book.date | datePipe}}
+        </p>
+        <p class="book-info__text">
+          <!--<ion-icon name="ios-navigate-outline" color="primary"></ion-icon>-->
+          <i class="img-icon img-icon_map-point"></i>
+          Адрес: {{book.address}}
+        </p>
+
+        <div class="order-list">
+          <ul class="order-list__list">
+            <li>{{book.playingField}}</li>
+            <li *ngFor="let service of book.orderSevices"></li>
+          </ul>
+        </div>
+
+        <p class="total-price">Общая стоимость: {{book.playFieldPrice}}
+          <!--<i class="fa fa-rub" aria-hidden="true"></i>-->
+          <span>руб.</span>
+        </p>
+      </div>
+      <div class="submite-buttons">
+        <p class='action-button' (click)="goToMapRout()">Схема проезда</p>
+        <p class='action-button' (click)="sendMail()">Отправить на email</p>
+        <p class='action-button' (click)="shareToFriend()">Пригласить друга</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="book-info_wrap" *ngIf="book != null && book.submit === 0">
+    <div class="book-info">
+      <div class="book-info__head">
+        <div class="book-info__head_col-1">
+          <img class="image-info" src="assets/images/booking-error.png">
+        </div>
+        <div class="book-info__head_col-2">
+          <h2 class="info">Ваше бронирование обрабатывается</h2>
+        </div>
+      </div>
+      <p class="">
+        Это может занять до 5 минут. Бронирование будет доступно в личном кабинете сразу после подтверждения.
+      </p>
+      <div class="button__container">
+        <button class="button button_try" ion-button full (click)="checkPayment()">Проверить бронирование</button>
+      </div>
+      <!-- <p class='action-button' (click)="goToPayment()">Перейти к оплате</p> -->
+      <!--<p class='action-button' (click)="goBack()">Список бронирований</p>-->
+      <p class='action-button' (click)="goToBookings()">Список бронирований</p>
+      <p class='action-button' (click)="sendSuppotMail()">Связаться со службой поддержки</p>
+    </div>
+  </div>
+</ion-content>

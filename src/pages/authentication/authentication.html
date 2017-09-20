@@ -1,0 +1,22 @@
+<ion-content class="no-scroll" [ngClass]="{'logo-hidden': logoHidden}">
+  <img class="logo" src="assets/images/logo.png"/>
+  <h1>Делаем спорт доступным</h1>
+
+  <form [formGroup]="complexForm" (ngSubmit)="submitForm(complexForm)">
+    <ion-input #nameInput class="login-input" placeholder="Введите имя" type="text"
+           [formControl]="complexForm.controls['name']"
+           (focus)="resize()"></ion-input>
+    <!-- <ion-input #phoneInput class="login-input phone-input" -->
+    <ion-input #phoneInput class="login-input phone-input" [textMask]="{mask: mask, guide: true, pipe: inputMaskPipe}"
+           placeholder="Введите телефон"
+           type="tel"
+           [formControl]="complexForm.controls['phone']"
+           (keyup)="updatePhone(phoneInput.value)"
+           (focus)="setPlaceholder(phoneInput);resize()"
+           (blur)="setPlaceholder(phoneInput)"></ion-input>
+    <label class="phone-label"></label>
+  </form>
+  <ion-footer class="footer">
+    <button class="submit-button" *ngIf="complexForm.valid" (click)="submitForm(complexForm)" ion-button full>Продолжить</button>
+  </ion-footer>
+</ion-content>
