@@ -213,6 +213,13 @@ page-place {
         opacity: 0;
         transition: 0.25s opacity;
       }
+      .select_r_time{
+        cursor: pointer;
+
+        &.active{
+          color: orangered;
+        }
+      }
     }
 
     &:checked {

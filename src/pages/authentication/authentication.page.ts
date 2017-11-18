@@ -10,10 +10,10 @@ import {Keyboard} from '@ionic-native/keyboard';
   templateUrl: 'authentication.html'
 })
 export class AuthenticationPage {
-  mask = ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  mask = ['+', '3', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   private complexForm: FormGroup;
   lockNextButton: boolean;
-  phonePlaceholder: string = '+7(___) ___-____';
+  phonePlaceholder: string = '+_(___) ___-____';
   phone: string;
   logoHidden : boolean = false;
 
@@ -45,7 +45,7 @@ export class AuthenticationPage {
     if (!control.value)
       return {invalidPhone: true};
     else {
-      if (control.value.replace(/\D+|\s/g, '').length < 11) { // text-mask input plugin bugfix
+      if (control.value.replace(/\D+|\s/g, '').length < 12) { // text-mask input plugin bugfix
         return {invalidPhone: true};
       }
     }

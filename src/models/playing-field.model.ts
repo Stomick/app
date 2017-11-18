@@ -3,6 +3,7 @@ export class PlayingField {
   info: string;
   name: string;
   price: number;
+  allPrice: any[] = [];
   sportCenterId: number;
   availableTimeId: number;
 
@@ -11,6 +12,16 @@ export class PlayingField {
     this.info = obj.info || '';
     this.name = obj.name || '';
     this.price = obj.price || 0;
+
+    if(obj.allPrice && obj.allPrice.length != 0) {
+
+      obj.allPrice.forEach((item) => {
+        this.allPrice.push(item);
+      });
+
+    }else {
+      this.allPrice = [];
+    }
     this.sportCenterId = obj.sportCenterId || 0;
     this.availableTimeId = obj.availableTimeId || 0;
   }

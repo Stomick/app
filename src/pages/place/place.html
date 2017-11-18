@@ -65,12 +65,29 @@
       </section>
 
       <form #f="ngForm" (submit)="formSubmit(f.value)" class="radio">
+        <h3 class="place-info__playground">Выберете доступный корт и период времени для бронирования</h3>
+        <div class="form-group">
+          <div class="radio" *ngFor="let pg of place.playingFields">
+            <input (ionChange)="updatePrice()"
+                   [id]="pg.id" type="radio" name="playground"
+                   [(ngModel)]="bookSelect.playground"
+                   (change)="changeRangeTime($event, pg.allPrice[0]); updatePrice()"
+                   [value]="pg.name">
+            <label [attr.for]="pg.id">
+              {{pg.name}}
+              <br>
+              <div class="select_r_time" (click)="changeRangeTime($event, pr)" *ngFor="let pr of pg.allPrice; let i=index">
+                 | {{pr.start}} - {{pr.time_price}}  руб./час |
+              </div>
+            </label>
+          </div>
+        </div>
         <div class="place-info__time">
           <h3 class="place-info__time-head">Выберите дату и время бронирования</h3>
           <ion-grid>
             <ion-row>
               <ion-col width-100>
-                <ion-datetime #datepicker 
+                <ion-datetime #datepicker
                               (ionChange)="dateChange(); calculateTimes(date, playingFields[0])"
                               displayFormat="DD MMMM"
                               [min]="minDate"
@@ -86,38 +103,32 @@
               </ion-col>
             </ion-row>
             <ion-row>
-              <ion-col width-100>
-                <ion-select 
-                  (ionChange)="dateChange()" 
-                  [(ngModel)]="time" 
+              <ion-col width-25>
+                <strong>С</strong>
+                <ion-select
+                  (ionChange)="rangeTimeChange()"
+                  [(ngModel)]="sTime"
                   [ngModelOptions]="{standalone: true}"
-                  cancelText="Отмена" 
+                  cancelText="Отмена"
                   doneText="Выбрать">
-                  <ion-option *ngFor="let item of times" [value]="item">{{item}}</ion-option>
+                  <ion-option *ngFor="let item of startTimes; let i = index" [value]="item.hour">{{item.hour}}</ion-option>
+                </ion-select>
+              </ion-col>
+              <ion-col width-25>
+                <strong>До</strong>
+                <ion-select
+                  (ionChange)="endrangeTime()"
+                  [(ngModel)]="eTime"
+                  [ngModelOptions]="{standalone: true}"
+                  cancelText="Отмена"
+                  doneText="Выбрать">
+                  <ion-option *ngFor="let item of endTimes; let i = index" [value]="item.hour">{{item.hour}}</ion-option>
                 </ion-select>
               </ion-col>
             </ion-row>
           </ion-grid>
           <!-- <button ion-button full (click)="chooseDate($event, datepicker)">Выбрать время и дату</button> -->
           <!-- <p class="data-change" (click)="datepicker.open()">Выбрать время и дату</p> -->
-        </div>
-
-        <h3 class="place-info__playground">Доступные для бронирования корты</h3>
-        <div class="form-group">
-          <div class="radio" *ngFor="let pg of place.playingFields">
-            <input (ionChange)="calculateTimes(date, playingFields[0])"
-                   [id]="pg.id" type="radio" name="playground"
-                   [(ngModel)]="bookSelect.playground"
-                   (change)="updatePrice()"
-                   [value]="pg.name">
-            <label [attr.for]="pg.id">
-              {{pg.name}}
-              <br>
-              <strong>{{pg.price}}
-                <!--<i class="fa fa-rub" aria-hidden="true"></i>-->
-                <span>руб.</span>/час</strong>
-            </label>
-          </div>
         </div>
         <h3 class="advantages__head">Дополнительные услуги</h3>
         <div class="form-group">

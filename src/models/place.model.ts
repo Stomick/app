@@ -18,9 +18,12 @@ export class Place {
   images: string[] = [];
   startWorkTime: string;
   endWorkTime: string;
+  workTime: any[] = [];
   advantages: {icon: string, name: string}[];
   roundTheClock : boolean;
   minPrice: number;
+  limit: number;
+
 
   constructor(obj) {
 
@@ -38,6 +41,8 @@ export class Place {
     this.endWorkTime = obj.end || '';
     this.roundTheClock = obj.typeTime || false;
     this.minPrice = obj.minPrice || 0;
+    this.workTime = obj.workTime || [];
+    this.limit = obj.limit || 10;
 
     if (this.description.length > 75) {
       this.descriptionShort = this.description.substr(0, 75);

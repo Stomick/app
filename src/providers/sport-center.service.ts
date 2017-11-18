@@ -94,12 +94,12 @@ export class SportCenterService {
     params.append('year', '' + date.getFullYear());
     params.append('month', '' + date.getMonth());
     params.append('day', '' + date.getDate());
+    /*
     params.append('hour', '' + date.getHours());
-    if (date.getDay() > 5) {
-      params.append('type', 'weekend');
-    } else {
-      params.append('type', 'work');
-    }
+    params.append('start_hour', '' + 'date.getHours());
+    params.append('end_hour', '' + '24');
+    */
+    date.getDay() < 6  && date.getDay() > 0? params.append('type' ,   'work') : params.append('type', 'weekend');
 
     return params;
   }
