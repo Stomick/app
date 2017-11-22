@@ -92,7 +92,7 @@ export class SportCenterService {
   private divideDate(params: URLSearchParams, date): URLSearchParams {
 
     params.append('year', '' + date.getFullYear());
-    params.append('month', '' + date.getMonth());
+    params.append('month', '' + (parseInt(date.getMonth()) + 1));
     params.append('day', '' + date.getDate());
     /*
     params.append('hour', '' + date.getHours());
@@ -130,14 +130,10 @@ export class SportCenterService {
   private transformOrderForRequest(order: Order): Object {
 
     // get time id
-    let availableTimeId = 0;
-    order.place.playingFields.forEach((item) => {
-      if (item.name == order.playground) {
-        availableTimeId = item.availableTimeId;
-      }
-    });
+    let availableTimeId = order.avaid;
     //date parse
-    let date = new Date(order.time);
+
+    let date = order.time.split('T')[0].split('-');
     //services
     let serviceIds = [];
     order.orderList.forEach((orderItem) => {
@@ -150,10 +146,13 @@ export class SportCenterService {
 
     return {
       'availableTimeId': availableTimeId,
-      'year': date.getFullYear(),
-      'month': date.getMonth(),
-      'day': date.getDate(),
+      'year': date[0],
+      'month': date[1],
+      'day': date[2],
       'serviceIds': serviceIds,
+      'start_hour': order.sTime,
+      'end_hour': order.eTime,
+      'price': order.price,
       'comment' : order.comment,
       'phone' : order.user.phone
     };

@@ -19,7 +19,7 @@
   <div class="margin">
     <h3>{{order.place.type}} {{order.place.name}}</h3>
     <p>Адрес: {{order.place.address}}</p>
-    <p>Время посещения: {{time | datePipe}} до {{time.getHours() + 1}}:00 </p>
+    <p>Время посещения: {{time | datePipe}} до {{order.eTime}}</p>
   </div>
 
   <div class="margin book-info">

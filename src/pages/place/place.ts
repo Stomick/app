@@ -30,6 +30,7 @@ export class PlacePage implements OnInit {
   }
 
   place: Place;
+  avaid: number;
   limit: number;
   date: string;
   time: string;
@@ -236,12 +237,14 @@ export class PlacePage implements OnInit {
    * @param form
    */
   formSubmit(form ?: any) {
-    const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.time, 'YYYY-MM-DD HH:mm').format();
-    this.sportCenters.checkSportCenter(new Date(time), this.place)
-      .subscribe(() => {
+
+    const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.sTime, 'YYYY-MM-DD HH:mm').format();
         let obj = {
           place: this.place,
+          avaid: this.avaid,
           time: time,
+          sTime: this.sTime,
+          eTime: this.eTime,
           orderList: this.servicesFromForm(this.bookSelect),
           price: this.calcPrice(this.bookSelect),
           orderListPriced: this.collectOrderList(this.bookSelect),
@@ -251,15 +254,7 @@ export class PlacePage implements OnInit {
 
         let order = new Order(obj);
 
-        this.navCtrl.push(OrderSubmitPage, {order: order});
-      }, (err) => {
-
-        let toast = this.toastCtrl.create({
-          message: 'Проверьте дату, не получилось проверить дату',
-          duration: 2000
-        });
-        toast.present();
-      });
+      this.navCtrl.push(OrderSubmitPage, {order: order});
   }
 
   /**
@@ -323,7 +318,8 @@ export class PlacePage implements OnInit {
     this.startTimes.splice(0, this.startTimes.length);
     this.endTimes.splice(0, this.endTimes.length);
     this.times.splice(0, this.times.length);
-
+    this.avaid = pg.availableTimeId;
+    console.log(this.avaid);
     let test = document.getElementsByClassName('select_r_time');
     for (let i = 0; i < test.length; i++) {
       test[i].classList.remove('active');
