@@ -1,0 +1,72 @@
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-title text-center>Выберите площадку</ion-title>
+
+    <ion-buttons end>
+      <button (click)="goToDashboard()" ion-button icon-only>
+        <ion-icon ios="ios-contact" md="md-contact" right></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <div class="tabs">
+      <div class="tabs__item" (click)="segment = 'list'" [ngClass]="{active: segment === 'list'}">
+        <span class="tabs__list">Список</span>
+      </div>
+      <div class="tabs__item" (click)="segment = 'map'" [ngClass]="{active: segment === 'map'}">
+        <span class="tabs__map">Карта</span>
+      </div>
+    </div>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+
+  <div class="place-choose__content place-choose__content_nothing" *ngIf="places && places.length === 0">
+    <p class="nothing-found">Не найдено</p>
+    <!-- <div>
+      <button ion-button (click)="goBack()">Вернуться назад</button>
+    </div> -->
+  </div>
+
+  <div class="place-choose__content" *ngIf="places && places.length > 0">
+
+    <ul class="list" [ngClass]="{hide: !isList()}">
+      <li class="list__item" *ngFor="let place of (places | placeSortByDistance)">
+
+        <div class="line__row" (click)="goToPlace(place)">
+          <div class="line__col line__col_1">
+            <div class="place">
+              <img class="place__logo" [src]="place.imageLogo">
+            </div>
+          </div>
+          <div class="line__col line__col_2 club">
+            <h4 class="club__name">{{place.name}}</h4>
+            <p class="club__price">
+              <i class="img-icon img-icon_coins img-icon_place-list"></i>
+              <span class="price_padding"> от {{place.minPrice}} </span>
+              <span>руб.</span>/час
+            </p>
+            <p class="club__adress">
+              <i class="img-icon img-icon_map-point img-icon_place-list"></i>
+              <span class="price_padding">{{place.address}}</span>
+            </p>
+            <p *ngIf="place.distance != null" class="distance">{{place.distance | distanceKmPipe}} км от Вас</p>
+          </div>
+        </div>
+
+      </li>
+    </ul>
+
+    <ion-list class="map-tab" [ngClass]="{hide: isList()}">
+      <yandex-map (placemarkClick)="mapClick($event)" [places]="places"></yandex-map>
+    </ion-list>
+
+  </div>
+
+</ion-content>

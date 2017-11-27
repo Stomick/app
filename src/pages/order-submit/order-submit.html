@@ -1,0 +1,65 @@
+
+
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>Подтверждение заказа</ion-title>
+  </ion-navbar>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-50 class="nav active">Шаг 1</ion-col>
+        <ion-col width-50 class="nav">Шаг 2</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="margin">
+    <h3>{{order.place.type}} {{order.place.name}}</h3>
+    <p>Адрес: {{order.place.address}}</p>
+    <p>Время посещения: {{time | datePipe}} до {{order.eTime}}</p>
+  </div>
+
+  <div class="margin book-info">
+    <ul class="book-info__list">
+      <li *ngFor="let item of order.orderListPriced">{{item.text}} {{item.price}}
+        <span>руб.</span>/час</li>
+    </ul>
+  </div>
+
+  <div class="guest margin">
+    <p class="guest__name">Имя гостя: {{order.user.name}}</p>
+    <p class="guest__contacts">Контактный телефон:
+      <ion-input #input class="guest__input"
+                 type="tel"
+                 [(ngModel)]="order.user.phone"
+                 [textMask]="{mask: mask}"
+                 (focus)="onFocus()"
+                 (blur)="onBlur()"
+                 (keyup)="phoneInputMaskBugfix(input.value);"></ion-input>
+      <i color="primary" class="fa fa-pencil" aria-hidden="true"></i>
+    </p>
+  </div>
+
+  <!--<div class="add-comment">-->
+  <!--<p (click)="addCommentShow = !addCommentShow">Добавить комментарий</p>-->
+  <!--<div *ngIf="addCommentShow" [@enterAnimation]="addCommentShow">-->
+  <!--<textarea class="add-comment__text-area" placeholder="Введите комментарий" [(ngModel)]="order.comment"></textarea>-->
+  <!--</div>-->
+  <!--</div>-->
+
+  <div class="total-price">
+    Общая стоимость {{order.price}} рублей
+  </div>
+
+  <div class="margin">
+    Нажимая кнопку "Забронировать", вы принимаете условия <a href="javascript:" (click)="presentOffer()">оферты</a>.
+  </div>
+
+  <div class="order-submit-footer">
+    <button class="order-submit-footer__button" ion-button (click)="submitOrder()">Забронировать</button>
+  </div>
+
+</ion-content>

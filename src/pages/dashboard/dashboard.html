@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="booked.length === 0">Личный кабинет</ion-title>
+    <ion-title *ngIf="booked.length !== 0">Ваши бронирования</ion-title>
+
+    <ion-buttons end>
+      <button (click)="goToDashboard()" ion-button icon-only>
+        <ion-icon ios="ios-contact" md="md-contact" right></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <div *ngIf="booked.length === 0" class="booked__none">
+    <section class="booked__none-text">
+      <h3>Здравствуйте, {{user.name}}!</h3>
+      <p>Здесь будут отображены ваши бронирования</p>
+      <p class="button button__blue action-button" (click)="emailToSupport()">Связаться со службой поддержки</p>
+      <p class="button button__blue action-button" (click)="inviteFriend()">Пригласить друга</p>
+    </section>
+  </div>
+
+  <ion-list no-lines *ngIf="booked.length !== 0">
+    <ion-item class="list-card" *ngFor="let item of booked">
+      <div class="list-card__info">
+        <h1 class="club-head">{{item.sportCenter}}</h1>
+        <p>
+          <!--<ion-icon ios="ios-time-outline" md="ios-time-outline" color="primary"></ion-icon>-->
+          <i class="img-icon img-icon_clock"></i>
+          <span class="list-card__info-text"> Время посещения: {{item.date | datePipe}} </span>
+        </p>
+        <p>
+          <!--<ion-icon name="ios-navigate-outline" color="primary"></ion-icon>-->
+          <i class="img-icon img-icon_map-point"></i>
+          <span class="list-card__info-text">Адрес: {{item.address}} </span>
+        </p>
+      </div>
+
+      <a class="club-button" (click)="getBooking(item.id)">Перейти к бронированию</a>
+    </ion-item>
+  </ion-list>
+</ion-content>

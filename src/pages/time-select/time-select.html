@@ -1,0 +1,55 @@
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-title left>
+      <img class="header-logo" src="assets/images/logo.png">
+    </ion-title>
+
+    <ion-buttons end>
+      <button (click)="goToDashboard()" ion-button icon-only>
+        <ion-icon ios="ios-contact" md="md-contact" [color]="light" right></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <section class="time-content">
+    <h1 class="time-content__head">Забронируйте теннисный корт за 30 секунд</h1>
+    <p class="time-content__text">Когда вы хотите сыграть?</p>
+
+    <ion-grid class="date">
+      <ion-row class="inputs-background">
+        <ion-col width-100 class="ion-datetime-wrap ">
+          <ion-datetime #dateSelect class="date__date"
+                        [min]="minDate"
+                        [max]="maxDate"
+                        displayFormat="в DDDD DD MMMM с HH:00"
+                        [minuteValues] = minuteValues
+                        pickerFormat = "DD MMMM HH mm"
+                        [monthNames]="monthNames"
+                        [dayShortNames]="dayShortNames"
+                        [dayNames] = "dayNames"
+                        [(ngModel)]="day">
+          </ion-datetime>
+          <ion-icon (click)="dateSelect.open()" name="arrow-down" md="ios-arrow-down" class="ion-datetime-wrap__arrow"></ion-icon>
+        </ion-col>
+        <!--<ion-col width-25 class="ion-datetime-wrap">-->
+          <!--<ion-datetime #hourSelect class="date__time border-left"-->
+                        <!--[min]="minDate"-->
+                        <!--[max]="maxDate"-->
+                        <!--displayFormat="HH:00"-->
+                        <!--pickerFormat="HH:00"-->
+                        <!--[(ngModel)]="day">-->
+          <!--</ion-datetime>-->
+
+          <!--<ion-icon (click)="hourSelect.open()" name="arrow-down" md="ios-arrow-down" class="ion-datetime-wrap__arrow"></ion-icon>-->
+        <!--</ion-col>-->
+      </ion-row>
+    </ion-grid>
+    <button ion-button class="time-content__button" (click)="goToPlaceChoose()">Подобрать корт</button>
+  </section>
+</ion-content>

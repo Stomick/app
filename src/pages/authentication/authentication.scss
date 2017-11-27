@@ -1,0 +1,102 @@
+page-authentication {
+  text-align: center;
+  font-family: 'Circe', sans-serif;
+
+  h1 {
+    display: none;
+    font-size: 1.5em;
+  }
+
+  .logo {
+    max-width: 60%;
+    margin-bottom: 2rem;
+  }
+
+  .logo-hidden {
+    padding-top: 20px;
+  }
+
+  .logo-hidden .logo, .logo-hidden h1{
+    display: none;
+  }
+
+  .logo-hidden form {
+    padding-top: 20px;
+  }
+
+  .scroll-content {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    //padding-top: 20px;
+
+    form {
+      width: 80%;
+      margin: 0 auto;
+    }
+
+  }
+
+  .logo-hidden .scroll-content {
+    display: block;
+  }
+
+  input[type="text"], input[type="tel"] {
+    width: 80%;
+    padding: 20px 0;
+    margin: 0 0 20px 0;
+    color: #202020;
+    text-align: center;
+
+    &::placeholder {
+      color: #000;
+    }
+  }
+
+  .login-input .text-input {
+    border: 1px solid color($colors, border);
+    border-radius: 30px;
+  }
+
+  .sticky-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  .submit-button {
+    width: 80%;
+    padding: 20px 0;
+    text-transform: none;
+    font-size: 20px;
+    margin: 0 auto;
+    background: $grafient-button;
+    border-radius: 25px;
+
+    .button-inner {
+      font-weight: 400 !important;
+    }
+  }
+
+  .footer {
+
+    position: relative;
+    width: 80%;
+    margin: 0 auto;
+
+    &__padding {
+      padding: 5px;
+    }
+
+    &:before {
+      display: none;
+    }
+  }
+}
+
+.no-scroll .scroll-content{
+  overflow: hidden;
+  margin-bottom: 0 !important;
+}

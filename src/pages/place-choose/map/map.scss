@@ -1,0 +1,66 @@
+// placemark styling
+.ymaps-2-1-50-image {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid color($colors, border);
+  box-shadow: 0 0 0 5px white;
+}
+
+.ymaps-2-1-48-balloon__close+.ymaps-2-1-48-balloon__content {
+  margin-right: 0 !important;
+}
+
+.ymaps-2-1-48-balloon__content {
+  padding: 0 !important;
+}
+
+.balloon {
+
+  display: flex;
+
+  &__col1 {
+    width: 30%;
+    text-align: center;
+    padding-top: 15px;
+  }
+
+  &__col2 {
+    width: 70%;
+  }
+
+  &__logo {
+    max-width: 75%;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 75px;
+    height: 75px;
+  }
+
+  &__header {
+    font-weight: 400;
+    font-size: 18px;
+    margin-top: 25px;
+  }
+
+  &__button {
+    border: 1px none color($colors, border);
+    border-top-style: solid;
+    text-align: center;
+    padding: 15px 0;
+    color: color($colors, text);
+    min-height: 40px;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  &__distance {
+    color: color($colors, danger);
+    font-size: 11px;
+    margin: 0;
+    padding-bottom: 15px;
+  }
+
+  &__address {
+    margin-bottom: 0;
+  }
+}

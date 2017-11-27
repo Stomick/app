@@ -1,0 +1,31 @@
+<ion-content padding>
+  <div class="content-logo">
+    <img class="logo" src="assets/images/logo.png"/>
+  </div>
+
+  <div class="content-info sms-verification">
+    <h4 class="content-info__head">{{name}}, мы отправили проверочный код Вам на номер</h4>
+    <h2>+{{phone}}</h2>
+
+    <div class="input-wrap">
+    <ion-input placeholder="Введите код" type="tel"
+           [ngClass]="{'on-input' : inputCode.length !== 0}"
+           [ngClass]="{'invalid' : !validCode}"
+           [attr.maxlength]="inputMaxLength" pattern="\d*"
+           [(ngModel)]="inputCode"
+           (input)="codeInput()"
+           (keyup)="verifyCode()"></ion-input>
+
+      <p class="input-wrap__code" *ngIf="!validCode">Проверьте правильность кода</p>
+    </div>
+
+    <div class="controls">
+      <p class='action-button' (click)="goBackToAuth()">Изменить номер телефона</p>
+      <p class='action-button'*ngIf="smsSendtimeout" (click)="sendNewCode()">Отправить код повторно</p>
+    </div>
+  </div>
+</ion-content>
+
+<!--<ion-footer class="footer footer__padding">-->
+  <!--<button class="submit-button" (click)="verifyCode()" ion-button full>Продолжить</button>-->
+<!--</ion-footer>-->

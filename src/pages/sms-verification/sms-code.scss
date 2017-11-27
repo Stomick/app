@@ -1,0 +1,113 @@
+sms-code {
+  text-align: center;
+  font-family: 'Circe', sans-serif;
+
+  h1 {
+    width: 100%;
+    font-size: 1.5em;
+  }
+
+  h4 {
+    font-size: 1em;
+  }
+
+  .logo {
+    margin-top: 5%;
+    max-width: 40%;
+  }
+
+  .scroll-content {
+    padding-bottom: 100px;
+  }
+
+  .content-logo {
+    //height: 15%;
+    margin-bottom: 15%;
+    img {
+      max-height: 100%;
+    }
+  }
+
+  .content-info {
+    //transition: all 0.3s;
+    //height: 80%;
+    //display: flex;
+    //flex-flow: column wrap;
+    //align-items: center;
+    //justify-content: center;
+
+    &__head {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+
+  ion-input {
+    width: 80%;
+    border: 1px solid color($colors, border);
+    border-radius: 30px;
+    margin: 0 auto 20px;
+  }
+
+  input[type="tel"] {
+    padding: 20px 0;
+    margin: 0;
+    color: #202020;
+    text-align: center;
+
+    &.invalid {
+      background: #ececec;
+      border: 1px solid color($colors, danger);
+    }
+
+    &.on-input {
+      letter-spacing: 15px;
+    }
+
+    &::placeholder {
+      color: #000;
+    }
+  }
+
+  .controls {
+    color: #3ea3dd;
+    padding-top: 10%;
+    width: 100%;
+  }
+
+  .action-button {
+    color: color($colors, primary);
+    text-align: center;
+    border: 1px solid #e9e9e9;
+    padding: 15px 0;
+    border-right: none;
+    border-left: none;
+    margin: 0;
+  }
+
+  .input-wrap {
+    width: 100%;
+    position: relative;
+    padding-bottom: 20px;
+
+    &__code {
+      position: absolute;
+      bottom: 0;
+      text-align: center;
+      width: 100%;
+      color: #f36775;
+    }
+  }
+
+  .submit-button {
+    background: $grafient-button;
+    border-radius: 25px;
+  }
+
+  .footer {
+
+    &__padding {
+      padding: 5px;
+    }
+  }
+}

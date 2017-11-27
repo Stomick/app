@@ -1,0 +1,103 @@
+page-time-select {
+
+  .header-logo {
+    padding: 5px;
+    max-height: 40px;
+  }
+
+  ion-header {
+    background: #f5f5f5;
+  }
+
+  .header::after {
+    display: none;
+  }
+
+  .date {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 0;
+
+    &__date {
+      padding-top: 15px;
+      padding-bottom: 15px;
+      //width: 60%;
+    }
+
+    &__date {
+      //width: 30%;
+    }
+  }
+
+  .border-left {
+    border-left: 1px solid #cfcfcf;
+  }
+
+  .toolbar-background {
+    background: #f5f5f5 !important;
+  }
+
+  .scroll-content {
+    background: #f5f5f5 !important;
+  }
+
+  .header-ios .toolbar-ios:last-child .toolbar-background-ios {
+    display: none;
+  }
+
+  .time-content {
+    height: 100%;
+    display: flex;
+    justify-self: center;
+    justify-content: center;
+    flex-direction: column;
+
+    &__head {
+      text-align: center;
+      padding: 15px 0;
+      font-size: 24px;
+      margin: 0;
+    }
+
+    &__text {
+      text-align: center;
+    }
+
+    &__button {
+      margin-top: 10px;
+      min-height: 50px;
+      background: $grafient-button;
+      border-radius: 25px;
+    }
+  }
+  ion-datetime {
+    position: relative;
+    width: 100%;
+  }
+
+  .ion-datetime-wrap {
+    position: relative;
+    border: 1px solid color($colors, border);
+    border-radius: 25px;
+    padding: 0 5px;
+
+    &__arrow {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translate(0, -50%);
+      color: #6eca8e;
+    }
+  }
+
+  .toolbar-title {
+    text-align: center;
+  }
+
+  .inputs-background {
+    width: 100%;
+    //background: #f1f1f1;
+  }
+}
