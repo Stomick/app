@@ -10,7 +10,7 @@ import {Keyboard} from '@ionic-native/keyboard';
   templateUrl: 'authentication.html'
 })
 export class AuthenticationPage {
-  mask = ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+  mask = ['+', '7', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
   private complexForm: FormGroup;
   lockNextButton: boolean;
   phonePlaceholder: string = '+7(___) ___-____';
