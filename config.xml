@@ -85,8 +85,8 @@
         <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
     </feature>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <engine name="android" spec="6.3.0" />
-    <engine name="ios" spec="4.5.2" />
+    <engine name="android" spec="^6.4.0" />
+    <engine name="ios" spec="^4.5.4" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />

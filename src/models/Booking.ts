@@ -7,6 +7,8 @@ export class Booking {
   month: number;
   day: number;
   hour: number;
+  end_hour: string;
+  start_hour: string;
   priceTime: number;
   playFieldPrice: number;
   submit: number;
@@ -26,6 +28,8 @@ export class Booking {
     this.priceTime = obj.price || 0;
     this.playFieldPrice = obj.price || 0;
     this.submit = obj.submit || 0;
+    this.start_hour = obj.start_hour || '';
+    this.end_hour = obj.end_hour || '';
     this.address = obj.sportCenterAddress || 'Не указан';
     this.date = new Date(this.year, this.month, this.day, this.hour);
   }
