@@ -79,7 +79,10 @@ export class PlaceChoosePage {
    * go to previos page
    */
   goBack(): void {
-    this.navCtrl.pop();
+
+    this.navCtrl.pop(function () {
+      window.location.reload();
+    });
   }
 
   /**

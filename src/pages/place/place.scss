@@ -1,5 +1,7 @@
 page-place {
-
+  ion-select{
+    max-width: 100%;
+  }
   .no-content {
     &__wrap {
       height: 100%;
@@ -182,6 +184,7 @@ page-place {
     display: none;
 
     & + label {
+      font-weight: bold !important;
       position: relative;
       padding-left: 30px;
       line-height: 25px;
@@ -214,10 +217,22 @@ page-place {
         transition: 0.25s opacity;
       }
       .select_r_time{
+
         cursor: pointer;
+        display: block;
+
+        input.ch_select_r_time{
+          /* margin-top: 4px; */
+          opacity: 1;
+          border: 1px solid;
+          width: 30px;
+          height: 15px;
+          display: inline-block;
+        }
 
         &.active{
           color: orangered;
+          font-weight: bold !important;
         }
       }
     }

@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NavController, NavParams, LoadingController, ToastController} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, ToastController , ModalController , ViewController} from 'ionic-angular';
 import moment from 'moment';
 import reduce from 'lodash/reduce';
 import isUndefined from 'lodash/isUndefined';
@@ -14,10 +14,12 @@ import {Order} from "../../models/order.model";
 import {AuthService} from "../../providers/auth.service";
 import {Slides} from 'ionic-angular';
 import {MapPage} from "../map/map";
+import {ModalPage} from "../modal-info/modal-info"
 
 @Component({
   selector: 'page-place',
-  templateUrl: 'place.html'
+  templateUrl: 'place.html',
+
 })
 
 export class PlacePage implements OnInit {
@@ -51,6 +53,7 @@ export class PlacePage implements OnInit {
   hourValues: number[];
   playingFields: object[];
   bookings: object[];
+  sumbDisable: boolean = true;
 
   form;
   @ViewChild(Slides) private _slides: Slides;
@@ -64,7 +67,9 @@ export class PlacePage implements OnInit {
               public sportCenters: SportCenterService,
               private loadingCtrl: LoadingController,
               public toastCtrl: ToastController,
-              public auth: AuthService) {
+              public auth: AuthService ,
+              public modalCtrl : ModalController,
+              public viewCtrl : ViewController) {
     let today = new Date();
     if (today.getMonth() == 11) {
       this.maxDate = moment(new Date(today.getFullYear() + 1, 1, 1)).format();
@@ -226,9 +231,11 @@ export class PlacePage implements OnInit {
       }
       ind++;
     });
+    this.sumbDisable = true;
   }
 
   endrangeTime() {
+    this.sumbDisable = false;
     this.updatePrice();
   }
 
@@ -237,24 +244,27 @@ export class PlacePage implements OnInit {
    * @param form
    */
   formSubmit(form ?: any) {
+    if(!this.sumbDisable) {
+      const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.sTime, 'YYYY-MM-DD HH:mm').format();
+      let obj = {
+        place: this.place,
+        avaid: this.avaid,
+        time: time,
+        sTime: this.sTime,
+        eTime: this.eTime,
+        orderList: this.servicesFromForm(this.bookSelect),
+        price: this.calcPrice(this.bookSelect),
+        orderListPriced: this.collectOrderList(this.bookSelect),
+        user: AuthService.getCurrentUser(),
+        playground: this.bookSelect['playground']
+      };
 
-    const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.sTime, 'YYYY-MM-DD HH:mm').format();
-        let obj = {
-          place: this.place,
-          avaid: this.avaid,
-          time: time,
-          sTime: this.sTime,
-          eTime: this.eTime,
-          orderList: this.servicesFromForm(this.bookSelect),
-          price: this.calcPrice(this.bookSelect),
-          orderListPriced: this.collectOrderList(this.bookSelect),
-          user: AuthService.getCurrentUser(),
-          playground: this.bookSelect['playground']
-        };
-
-        let order = new Order(obj);
+      let order = new Order(obj);
 
       this.navCtrl.push(OrderSubmitPage, {order: order});
+    }else {
+      this.openModal();
+    }
   }
 
   /**
@@ -323,9 +333,11 @@ export class PlacePage implements OnInit {
     let test = document.getElementsByClassName('select_r_time');
     for (let i = 0; i < test.length; i++) {
       test[i].classList.remove('active');
+      window.console.log(test[i].lastElementChild.removeAttribute('checked'));
     }
     if(e !== null && e.srcElement.classList.contains('select_r_time')) {
       e.srcElement.classList.add('active');
+      e.srcElement.lastElementChild.setAttribute('checked' , 'true');
     }
 
     pg.avalableTime.forEach((item) => {
@@ -341,7 +353,7 @@ export class PlacePage implements OnInit {
     this.sTime = this.startTimes[0];
     this.eTime = this.endTimes[0];
     this.updatePrice();
-
+    this.sumbDisable = true;
   }
 
   updatePrice() {
@@ -387,5 +399,11 @@ export class PlacePage implements OnInit {
 
   placeOnMap() {
     this.navCtrl.push(MapPage, {'place': this.place});
+  }
+
+  openModal() {
+    let obj = {userId: '1', name: 'Bob', email: 'bob@unicorn.com'};
+    let myModal = this.modalCtrl.create(ModalPage, obj);
+    myModal.present();
   }
 }

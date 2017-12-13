@@ -16,6 +16,7 @@ import {PaymentPage} from "../pages/payment/payment";
 import {DistanceKmPipe, DistancePlaceSort} from "../pages/place-choose/distance.pipe";
 import {PaymentService} from "../providers/payment.service";
 import {MapPage} from "../pages/map/map";
+import {ModalPage} from "../pages/modal-info/modal-info"
 import {OfferPage} from "../pages/offer/offer";
 import {DatePipeTemplate} from "../components/pipes/date.pipe";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
@@ -24,6 +25,7 @@ import {Keyboard} from "@ionic-native/keyboard";
 
 @NgModule({
   declarations: [
+    ModalPage,
     MyApp,
     AuthenticationPage,
     SmsVerifyPage,
@@ -52,6 +54,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   ],
   bootstrap: [IonicApp],
   entryComponents: [
+    ModalPage,
     MyApp,
     AuthenticationPage,
     SmsVerifyPage,

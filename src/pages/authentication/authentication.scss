@@ -8,15 +8,15 @@ page-authentication {
   }
 
   .logo {
-    max-width: 60%;
-    margin-bottom: 2rem;
+    max-width: 100%;
+    margin-bottom: 2%;
   }
 
   .logo-hidden {
-    padding-top: 20px;
+    padding-top: 5px;
   }
 
-  .logo-hidden .logo, .logo-hidden h1{
+  .logo-hidden .logo, .logo-hidden h1 {
     display: none;
   }
 
@@ -32,10 +32,26 @@ page-authentication {
     //padding-top: 20px;
 
     form {
+      position: fixed;
       width: 80%;
-      margin: 0 auto;
-    }
+      padding-left: 20%;
+      padding-top: 35%;
+      top: 0;
 
+      .footer {
+        position: relative;
+        width: 80%;
+        margin: 0 auto;
+
+        &__padding {
+          padding: 5px;
+        }
+
+        &:before {
+          display: none;
+        }
+      }
+    }
   }
 
   .logo-hidden .scroll-content {
@@ -80,23 +96,9 @@ page-authentication {
     }
   }
 
-  .footer {
-
-    position: relative;
-    width: 80%;
-    margin: 0 auto;
-
-    &__padding {
-      padding: 5px;
-    }
-
-    &:before {
-      display: none;
-    }
-  }
 }
 
-.no-scroll .scroll-content{
+.no-scroll .scroll-content {
   overflow: hidden;
   margin-bottom: 0 !important;
 }

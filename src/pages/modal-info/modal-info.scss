@@ -1,0 +1,30 @@
+page-modal-info {
+  .modal-wrapper {
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+}
+.scroll-content {
+  .text_info {
+    display: block;
+    height: 60%;
+    position: relative;
+    text-align: center;
+    font-size: 2em;
+    top: 35%;
+  }
+
+  p button.alert_text {
+    position: absolute;
+    left: 50%;
+    margin-left: -2.1em;
+    font-size: 2em;
+    padding: .5em;
+    border-radius: 20px;
+    border: 1px solid black;
+    background: linear-gradient(135deg, #51cca8 0%, #6eca8e 100%);
+    /* font-weight: 700; */
+    /* bottom: -500px; */
+  }
+}
