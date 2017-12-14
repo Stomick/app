@@ -32,11 +32,9 @@ page-authentication {
     //padding-top: 20px;
 
     form {
-      position: fixed;
+      top: 5rem;
+      position: absolute;
       width: 80%;
-      padding-left: 20%;
-      padding-top: 35%;
-      top: 0;
 
       .footer {
         position: relative;
