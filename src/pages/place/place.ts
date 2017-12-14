@@ -244,7 +244,6 @@ export class PlacePage implements OnInit {
    * @param form
    */
   formSubmit(form ?: any) {
-    if(!this.sumbDisable) {
       const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.sTime, 'YYYY-MM-DD HH:mm').format();
       let obj = {
         place: this.place,
@@ -262,9 +261,6 @@ export class PlacePage implements OnInit {
       let order = new Order(obj);
 
       this.navCtrl.push(OrderSubmitPage, {order: order});
-    }else {
-      this.openModal();
-    }
   }
 
   /**

@@ -158,7 +158,7 @@
       </p>
     </div>
     <div class="footer__col">
-      <button ion-button full class="next-button" (keydown)="updatePrice()" (click)="(!sumbDisable)? thisformSubmit(): openModal() ">Забронировать</button>
+      <button ion-button full class="next-button" (keydown)="updatePrice()" (click)="(sumbDisable == false )? formSubmit(): openModal() ">Забронировать</button>
     </div>
   </div>
 </ion-footer>

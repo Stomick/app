@@ -7,11 +7,12 @@
     <!-- <ion-input #phoneInput class="login-input phone-input" -->
     <ion-input #phoneInput class="login-input phone-input"
                [textMask]="{mask: mask, guide: true, pipe: inputMaskPipe}"
-           placeholder="Введите телефон"
-           type="tel"
-           [formControl]="complexForm.controls['phone']"
-           (keyup)="updatePhone(phoneInput.value)"
-           (blur)="setPlaceholder(phoneInput)"></ion-input>
+               placeholder="Введите телефон"
+               type="tel"
+               [formControl]="complexForm.controls['phone']"
+               (keyup)="updatePhone(phoneInput.value)"
+               (blur)="setPlaceholder(phoneInput)">
+    </ion-input>
     <label class="phone-label"></label>
     <ion-footer class="footer">
       <button class="submit-button" *ngIf="complexForm.valid" (click)="submitForm(complexForm)" ion-button full>Продолжить</button>
