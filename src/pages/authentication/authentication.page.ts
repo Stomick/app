@@ -128,8 +128,11 @@ export class AuthenticationPage {
     return conformedValue;
   }
 
-  resizeContent() : void {
+  resizeContent(event) : void {
+      if (event.target.tagName === 'INPUT') {
 
+        document.body.scrollTop = 0;
+      }
   }
 
 }
