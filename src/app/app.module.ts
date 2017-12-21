@@ -22,6 +22,7 @@ import {DatePipeTemplate} from "../components/pipes/date.pipe";
 import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {PaymentIFramePage} from "../pages/payment-i-frame/payment-i-frame";
 import {Keyboard} from "@ionic-native/keyboard";
+import {Geolocation} from '@ionic-native/geolocation';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import {Keyboard} from "@ionic-native/keyboard";
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    Geolocation,
     AuthService,
     DashboardService,
     SportCenterService,

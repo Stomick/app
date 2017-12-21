@@ -43,6 +43,8 @@
   }
 
   &__button {
+    display: block;
+    cursor: pointer;
     border: 1px none color($colors, border);
     border-top-style: solid;
     text-align: center;

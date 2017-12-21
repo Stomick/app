@@ -32,6 +32,7 @@ export class PlaceChoosePage {
   /**
    * loads map on view shown
    */
+
   ionViewDidLoad() {
 
     let loading = this.loadingCtrl.create({

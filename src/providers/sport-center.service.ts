@@ -6,7 +6,7 @@ import 'rxjs';
 import {Place} from "../models/place.model";
 import {AuthService} from "./auth.service";
 import {Order} from "../models/order.model";
-import {Geolocation} from 'ionic-native';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @Injectable()
 export class SportCenterService {
@@ -17,9 +17,20 @@ export class SportCenterService {
   private token: string = AuthService.getCurrentUser().token;
   public position: {lat: number, lng: number};
 
-  constructor(private  http: Http) {
+
+  constructor(private  http: Http , private geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
 
+    geolocation.getCurrentPosition().then((res) => {
+      this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
+      window.console.log(this.position);
+    }).catch((err) => {
+      // if cannot load geodata - set Moscow as default value
+      this.position = {lat: 55.7819219, lng: 37.5061349};
+      console.error('Cannot load geo data: ' + err.message);
+    });
+
+    /*
     Geolocation.getCurrentPosition().then((res) => {
       this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
     }).catch((err) => {
@@ -27,7 +38,9 @@ export class SportCenterService {
       this.position = {lat: 55.7819219, lng: 37.5061349};
       console.error('Cannot load geo data: ' + err.message);
     });
+    */
   }
+
 
   parseData(response){
       return response.json();
