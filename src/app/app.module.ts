@@ -23,6 +23,8 @@ import {InAppBrowser} from "@ionic-native/in-app-browser";
 import {PaymentIFramePage} from "../pages/payment-i-frame/payment-i-frame";
 import {Keyboard} from "@ionic-native/keyboard";
 import {Geolocation} from '@ionic-native/geolocation';
+import {SocialSharing} from '@ionic-native/social-sharing';
+import {SocialShare} from "../components/SocialShare/SocicalShare";
 
 @NgModule({
   declarations: [
@@ -73,6 +75,9 @@ import {Geolocation} from '@ionic-native/geolocation';
   ],
   providers: [
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+
+    SocialShare,
+    SocialSharing,
     Geolocation,
     AuthService,
     DashboardService,

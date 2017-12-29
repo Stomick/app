@@ -11,6 +11,7 @@ export class SocialShare extends SocialSharing {
   }
 
   public sendSuppotMail() {
+    window.console.log('there');
     return this.shareViaEmail(socialText.email, socialText.email, [socialText.suppotEmail]);
   }
 

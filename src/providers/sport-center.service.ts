@@ -6,7 +6,9 @@ import 'rxjs';
 import {Place} from "../models/place.model";
 import {AuthService} from "./auth.service";
 import {Order} from "../models/order.model";
-import { Geolocation } from '@ionic-native/geolocation';
+import {Geolocation} from '@ionic-native/geolocation';
+import {Platform} from 'ionic-angular';
+
 
 @Injectable()
 export class SportCenterService {
@@ -15,59 +17,85 @@ export class SportCenterService {
   private API_ERR: string = config.default.API_ERROR;
   private headers: Headers = new Headers();
   private token: string = AuthService.getCurrentUser().token;
-  public position: {lat: number, lng: number};
+  public position: { lat: number, lng: number };
 
 
-  constructor(private  http: Http , private geolocation: Geolocation) {
+  constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
-
-    geolocation.getCurrentPosition().then((res) => {
-      this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
-      window.console.log(this.position);
-    }).catch((err) => {
-      // if cannot load geodata - set Moscow as default value
-      this.position = {lat: 55.7819219, lng: 37.5061349};
-      console.error('Cannot load geo data: ' + err.message);
-    });
-
-    /*
-    Geolocation.getCurrentPosition().then((res) => {
-      this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
-    }).catch((err) => {
-      // if cannot load geodata - set Moscow as default value
-      this.position = {lat: 55.7819219, lng: 37.5061349};
-      console.error('Cannot load geo data: ' + err.message);
-    });
-    */
+    this.position = { lat: 0, lng: 0 };
   }
 
-
-  parseData(response){
-      return response.json();
+  parseData(response) {
+    return response.json();
   }
 
-  public schedule(id, startDate, endDate){
-      return this.http
-          .get(this.API_URL + 'bookings/schedule?id=' + id + '&startDate=' + startDate + '&endDate=' + endDate, {headers: this.headers}).map(this.parseData)
+  public schedule(id, startDate, endDate) {
+    return this.http
+      .get(this.API_URL + 'bookings/schedule?id=' + id + '&startDate=' + startDate + '&endDate=' + endDate, {headers: this.headers}).map(this.parseData)
   }
+
   /**
    * GET request
    * @param date
    * @return {Observable<Place[]>}
    */
   public getSportCenters(date: Date): Observable<Place[]> {
+    //this.position = { lat: position.lat, lng: position.lng };
 
-    let params = new URLSearchParams();
-    params = this.divideDate(params, date);
+    if (this.platform.ready()) {
 
-    return this.http.get(`${this.API_URL}sport-centers/list`, {headers: this.headers, search: params})
-      .map(this.parseSportCenters)
-      .map((places: Place[]) => {
-        return this.updateDistance(places);
-      })
-      .catch(this.handleError);
+      let params = new URLSearchParams();
+      params = this.divideDate(params, date);
+
+      return this.http.get(`${this.API_URL}sport-centers/list`, {headers: this.headers, search: params})
+        .map(this.parseSportCenters)
+        .map((places: Place[]) => {
+          if(this.position.lat == 0 && this.position.lng == 0 ){
+            this.getPosition();
+          }
+          return this.updateDistance(places);
+        })
+        .catch(this.handleError);
+    };
   }
 
+  public getPosition(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+          window.console.log(this.position, 'navi');
+        },
+        (error) => {
+
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 50000,
+          maximumAge: 0
+        }
+      );
+    } else if(this.geolocation) {
+      this.geolocation.getCurrentPosition().then(
+        (res) => {
+
+          this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
+          window.console.log(this.position, 'geo');
+
+        }).catch(error => {
+        window.console.log(error);
+      });
+    }else{
+      const watch = this.geolocation.watchPosition().subscribe(pos => {
+        window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
+        this.position= {lat: pos.coords.latitude, lng: pos.coords.longitude};
+        window.console.log(this.position, 'watch');
+      });
+
+      // to stop watching
+      watch.unsubscribe();
+    }
+  }
   /**
    * GET request
    * @param date
@@ -112,12 +140,13 @@ export class SportCenterService {
     params.append('start_hour', '' + 'date.getHours());
     params.append('end_hour', '' + '24');
     */
-    date.getDay() < 6  && date.getDay() > 0? params.append('type' ,   'work') : params.append('type', 'weekend');
+    date.getDay() < 6 && date.getDay() > 0 ? params.append('type', 'work') : params.append('type', 'weekend');
 
     return params;
   }
 
   private parseSportCenters(res: Response) {
+
     let arr = [];
     let respData = res.json();
 
@@ -166,8 +195,8 @@ export class SportCenterService {
       'start_hour': order.sTime,
       'end_hour': order.eTime,
       'price': order.price,
-      'comment' : order.comment,
-      'phone' : order.user.phone
+      'comment': order.comment,
+      'phone': order.user.phone
     };
   }
 
@@ -180,7 +209,7 @@ export class SportCenterService {
           item.distance =
             this.getDistanceFromLatLonInKm(this.position.lat, this.position.lng, item.latitude, item.longitude);
         } else {
-          item.distance = null;
+          item.distance = 0;
         }
       });
     }

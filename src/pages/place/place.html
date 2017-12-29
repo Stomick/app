@@ -7,14 +7,14 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
+<!--
   <div class="no-content__wrap" *ngIf="place == null">
     <div>
       <p class="no-content__text">В Спорт центре нет свободных мест на заданное время</p>
       <button ion-button full (click)="returnResults()">К предыдущему результату</button>
     </div>
   </div>
-
+-->
   <div *ngIf="place != null">
     <div class="image-container">
       <ion-slides [pager]="true">
@@ -64,9 +64,12 @@
         </div>
       </section>
 
-      <form #f="ngForm" (submit)="formSubmit(f.value)" class="radio">
+      <form #f="ngForm" *ngIf="place != null" (submit)="formSubmit(f.value)" class="radio">
         <h3 class="place-info__playground">Выберете доступный корт и период времени для бронирования</h3>
         <div class="form-group">
+          <div *ngIf="place.playingFields.length == 0" id="alert_place">
+            <h3 class="alert">Свободного времени нет</h3>
+          </div>
           <div class="radio" *ngFor="let pg of place.playingFields">
             <input (ionChange)="updatePrice()"
                    [id]="pg.id" type="radio" name="playground"
@@ -82,7 +85,7 @@
             </label>
           </div>
         </div>
-        <div class="place-info__time">
+        <div *ngIf="place.playingFields.length > 0" class="place-info__time">
           <h3 class="place-info__time-head">Выберите дату и время бронирования</h3>
           <ion-grid>
             <ion-row>
@@ -130,8 +133,8 @@
           <!-- <button ion-button full (click)="chooseDate($event, datepicker)">Выбрать время и дату</button> -->
           <!-- <p class="data-change" (click)="datepicker.open()">Выбрать время и дату</p> -->
         </div>
-        <h3 class="advantages__head">Дополнительные услуги</h3>
-        <div class="form-group">
+        <div class="form-group" *ngIf="place.services.length > 0">
+          <h3 class="advantages__head">Дополнительные услуги</h3>
           <div class="checkbox" *ngFor="let service of place.services">
             <input [id]="service.name" type="checkbox"
                    [name]="service.name"

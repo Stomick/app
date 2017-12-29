@@ -1,5 +1,6 @@
+///<reference path="../../declarations.d.ts"/>
 import {Component, ViewChild, ElementRef} from '@angular/core';
-import {NavController, NavParams, LoadingController} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, Platform} from 'ionic-angular';
 import {Place} from "../../models/place.model";
 import {DashboardPage} from "../dashboard/dashboard";
 import {PlacePage} from "../place/place";
@@ -7,8 +8,11 @@ import {SportCenterService} from "../../providers/sport-center.service";
 import {redirectToAuthPage} from "../../components/Redirects/authRedirect";
 import map from 'lodash/map';
 import * as moment from 'moment';
+import {Geolocation} from "@ionic-native/geolocation";
+
+
 // HARDCODE mock places
-import Places from "../../mock-data/places"
+
 
 @Component({
   selector: 'page-place-choose',
@@ -21,19 +25,23 @@ export class PlaceChoosePage {
   map: any;
   places: Place[];
   time: string;
+  public position: { lat: number, lng: number };
 
-  constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public sportCenters: SportCenterService,
-    private loadingCtrl: LoadingController
-  ) {}
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public sportCenters: SportCenterService,
+              private loadingCtrl: LoadingController,
+              private platform: Platform,
+              public geolocation: Geolocation) {
+  }
+
 
   /**
    * loads map on view shown
    */
 
   ionViewDidLoad() {
+
 
     let loading = this.loadingCtrl.create({
       content: "Пожалуйста, подождите..."
@@ -42,7 +50,7 @@ export class PlaceChoosePage {
 
     // this.time = this.navParams.get('date');
     // let date = new Date(this.navParams.get('date'));
-    let date = new Date(moment(moment().add(1,'day').format(), moment.ISO_8601).format());
+    let date = new Date(moment(moment().add(1, 'day').format(), moment.ISO_8601).format());
 
     this.sportCenters.getSportCenters(date).subscribe((res) => {
       this.places = res;
@@ -68,6 +76,7 @@ export class PlaceChoosePage {
     const date = new Date();
     return this.sportCenters.getSportCenters(date);
   }
+
   /**
    * check tab on type
    * @return {boolean}
@@ -105,7 +114,7 @@ export class PlaceChoosePage {
    * map event emitter listener
    * @param place
    */
-  mapClick(place : any) {
+  mapClick(place: any) {
     this.navCtrl.push(PlacePage, {place: place, time: this.time});
   }
 }
