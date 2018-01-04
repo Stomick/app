@@ -42,34 +42,34 @@ export class PlaceChoosePage {
 
   ionViewDidLoad() {
 
-
     let loading = this.loadingCtrl.create({
       content: "Пожалуйста, подождите..."
     });
     loading.present();
+    if(this.platform.ready()) {
+      // this.time = this.navParams.get('date');
+      // let date = new Date(this.navParams.get('date'));
+      let date = new Date(moment(moment().add(1, 'day').format(), moment.ISO_8601).format());
 
-    // this.time = this.navParams.get('date');
-    // let date = new Date(this.navParams.get('date'));
-    let date = new Date(moment(moment().add(1, 'day').format(), moment.ISO_8601).format());
+      this.sportCenters.getSportCenters(date).subscribe((res) => {
+        this.places = res;
+        loading.dismissAll();
+      }, (err) => {
+        loading.dismissAll();
+        redirectToAuthPage(err, this.navCtrl);
+      });
 
-    this.sportCenters.getSportCenters(date).subscribe((res) => {
-      this.places = res;
-      loading.dismissAll();
-    }, (err) => {
-      loading.dismissAll();
-      redirectToAuthPage(err, this.navCtrl);
-    });
+      // let loading = this.loadingCtrl.create({
+      //   content: "Пожалуйста, подождите..."
+      // });
+      // loading.present();
 
-    // let loading = this.loadingCtrl.create({
-    //   content: "Пожалуйста, подождите..."
-    // });
-    // loading.present();
-
-    // // HARDCODE mock places
-    // setTimeout(() => {
-    //   this.places = map(Places, (place) => {return new Place(place)});
-    //   loading.dismissAll();
-    // }, 1000);
+      // // HARDCODE mock places
+      // setTimeout(() => {
+      //   this.places = map(Places, (place) => {return new Place(place)});
+      //   loading.dismissAll();
+      // }, 1000);
+    }
   }
 
   getPlaces() {

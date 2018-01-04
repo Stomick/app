@@ -9,6 +9,7 @@ import {Order} from "../models/order.model";
 import {Geolocation} from '@ionic-native/geolocation';
 import {Platform} from 'ionic-angular';
 
+declare var ymaps;
 
 @Injectable()
 export class SportCenterService {
@@ -18,11 +19,27 @@ export class SportCenterService {
   private headers: Headers = new Headers();
   private token: string = AuthService.getCurrentUser().token;
   public position: { lat: number, lng: number };
+  public testPos: any;
 
 
   constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
-    this.position = { lat: 0, lng: 0 };
+    this.position = {lat: 0, lng: 0};
+    if (ymaps.ready()) {
+      this.testPos = ymaps.geolocation.get({
+        // Зададим способ определения геолокации
+        // на основе ip пользователя.
+        provider: 'yandex',
+        // Включим автоматическое геокодирование результата.
+        autoReverseGeocode: true
+      }).then(function (result) {
+        // Выведем результат геокодирования.
+        return result.geoObjects.position;
+      }).catch(error => {
+        window.console.log(error);
+      }).valueOf();
+      window.console.log(this.testPos);
+    }
   }
 
   parseData(response) {
@@ -42,60 +59,70 @@ export class SportCenterService {
   public getSportCenters(date: Date): Observable<Place[]> {
     //this.position = { lat: position.lat, lng: position.lng };
 
-    if (this.platform.ready()) {
+    let params = new URLSearchParams();
+    params = this.divideDate(params, date);
 
-      let params = new URLSearchParams();
-      params = this.divideDate(params, date);
+    return this.http.get(`${this.API_URL}sport-centers/list`, {headers: this.headers, search: params})
+      .map(this.parseSportCenters)
+      .map((places: Place[]) => {
+        if (this.position.lat == 0 && this.position.lng == 0) {
+          this.getPosition();
+        }
+        return this.updateDistance(places);
+      })
+      .catch(this.handleError);
+  }
+  getYandexPos(){
 
-      return this.http.get(`${this.API_URL}sport-centers/list`, {headers: this.headers, search: params})
-        .map(this.parseSportCenters)
-        .map((places: Place[]) => {
-          if(this.position.lat == 0 && this.position.lng == 0 ){
-            this.getPosition();
-          }
-          return this.updateDistance(places);
-        })
-        .catch(this.handleError);
-    };
   }
 
-  public getPosition(){
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          this.position = {lat: position.coords.latitude, lng: position.coords.longitude};
-          window.console.log(this.position, 'navi');
-        },
-        (error) => {
+  public getPosition() {
+    let pos = this.getYandexPos();
+    window.console.log(pos);
+   // this.position.lat = pos[0];
+    //this.position.lng = pos[1];
+    window.console.log(this.position);
 
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 50000,
-          maximumAge: 0
-        }
-      );
-    } else if(this.geolocation) {
-      this.geolocation.getCurrentPosition().then(
-        (res) => {
+    if (this.position.lat == 0 && this.position.lng == 0) {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.position = {lat: position.coords.latitude, lng: position.coords.longitude};
+            window.console.log(position, 'navi');
+          },
+          (error) => {
 
-          this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
-          window.console.log(this.position, 'geo');
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 50000,
+            maximumAge: 0
+          }
+        );
+      }
+      if (this.geolocation) {
+        this.geolocation.getCurrentPosition().then(
+          (res) => {
 
-        }).catch(error => {
-        window.console.log(error);
-      });
-    }else{
-      const watch = this.geolocation.watchPosition().subscribe(pos => {
-        window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
-        this.position= {lat: pos.coords.latitude, lng: pos.coords.longitude};
-        window.console.log(this.position, 'watch');
-      });
+            this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
+            window.console.log(res, 'geo');
 
-      // to stop watching
-      watch.unsubscribe();
+          }).catch(error => {
+          window.console.log(error);
+        });
+      } else {
+        const watch = this.geolocation.watchPosition().subscribe(pos => {
+          window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
+          this.position = {lat: pos.coords.latitude, lng: pos.coords.longitude};
+          window.console.log(this.position, 'watch');
+        });
+
+        // to stop watching
+        watch.unsubscribe();
+      }
     }
   }
+
   /**
    * GET request
    * @param date

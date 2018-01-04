@@ -71,6 +71,7 @@ export class YandexMap implements OnInit, OnChanges {
     this.map.controls.add('zoomControl');
 
     this.yamapsLoad = true;
+    //let maps = new ymaps.Map(ymaps.jQuery("#map")[0]), center;
   }
 
   drawPointers() {
