@@ -24,22 +24,8 @@ export class SportCenterService {
 
   constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
-    this.position = {lat: 0, lng: 0};
-    if (ymaps.ready()) {
-      this.testPos = ymaps.geolocation.get({
-        // Зададим способ определения геолокации
-        // на основе ip пользователя.
-        provider: 'yandex',
-        // Включим автоматическое геокодирование результата.
-        autoReverseGeocode: true
-      }).then(function (result) {
-        // Выведем результат геокодирования.
-        return result.geoObjects.position;
-      }).catch(error => {
-        window.console.log(error);
-      }).valueOf();
-      window.console.log(this.testPos);
-    }
+    this.position = { lat: 0, lng: 0 };
+    this.getPosition();
   }
 
   parseData(response) {
@@ -50,7 +36,9 @@ export class SportCenterService {
     return this.http
       .get(this.API_URL + 'bookings/schedule?id=' + id + '&startDate=' + startDate + '&endDate=' + endDate, {headers: this.headers}).map(this.parseData)
   }
+  ionViewDidLoad(){
 
+  }
   /**
    * GET request
    * @param date
@@ -62,64 +50,66 @@ export class SportCenterService {
     let params = new URLSearchParams();
     params = this.divideDate(params, date);
 
+
     return this.http.get(`${this.API_URL}sport-centers/list`, {headers: this.headers, search: params})
       .map(this.parseSportCenters)
       .map((places: Place[]) => {
-        if (this.position.lat == 0 && this.position.lng == 0) {
-          this.getPosition();
-        }
         return this.updateDistance(places);
       })
       .catch(this.handleError);
+  };
+
+  getYandexPoint(arrCoord){
+    this.position = {lat: arrCoord[0], lng: arrCoord[1]};
+    window.console.log(this.position, 'getYand');
   }
-  getYandexPos(){
+  private getPosition() {
+    if (ymaps.ready()) {
+      ymaps.geolocation.get({
+        // Зададим способ определения геолокации
+        // на основе ip пользователя.
+        provider: 'yandex',
+        // Включим автоматическое геокодирование результата.
+        autoReverseGeocode: true
+      }).then((result) => {
+        let arrCoord = result.geoObjects.position;
+        return this.getYandexPoint(result.geoObjects.position)
 
-  }
+      });
+    }
+    else if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          window.console.log(position, 'navi');
+          return this.getYandexPoint({0:position.coords.latitude,1:position.coords.longitude});
+        },
+        (error) => {
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 50000,
+          maximumAge: 0
+        }
+      );
+    }
+    else if (this.geolocation) {
+       this.geolocation.getCurrentPosition().then(
+        (res) => {
+          window.console.log(res, 'geo');
+          return  this.getYandexPoint({0:res.coords.latitude,1:res.coords.longitude});
 
-  public getPosition() {
-    let pos = this.getYandexPos();
-    window.console.log(pos);
-   // this.position.lat = pos[0];
-    //this.position.lng = pos[1];
-    window.console.log(this.position);
+        }).catch(error => {
+        window.console.log(error);
+      });
+    } else {
+      const watch = this.geolocation.watchPosition().subscribe(pos => {
+        window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
+        return this.getYandexPoint({0:pos.coords.latitude,1:pos.coords.longitude});
 
-    if (this.position.lat == 0 && this.position.lng == 0) {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            this.position = {lat: position.coords.latitude, lng: position.coords.longitude};
-            window.console.log(position, 'navi');
-          },
-          (error) => {
+      });
 
-          },
-          {
-            enableHighAccuracy: true,
-            timeout: 50000,
-            maximumAge: 0
-          }
-        );
-      }
-      if (this.geolocation) {
-        this.geolocation.getCurrentPosition().then(
-          (res) => {
-
-            this.position = {lat: res.coords.latitude, lng: res.coords.longitude};
-            window.console.log(res, 'geo');
-
-          }).catch(error => {
-          window.console.log(error);
-        });
-      } else {
-        const watch = this.geolocation.watchPosition().subscribe(pos => {
-          window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
-          this.position = {lat: pos.coords.latitude, lng: pos.coords.longitude};
-          window.console.log(this.position, 'watch');
-        });
-
-        // to stop watching
-        watch.unsubscribe();
-      }
+      // to stop watching
+      watch.unsubscribe();
     }
   }
 
@@ -229,7 +219,7 @@ export class SportCenterService {
 
   public updateDistance(places: Place[]): Place[] {
     let arr = Array.from(places);
-
+    console.log(this.position);
     if (this.position) {
       arr.forEach((item) => {
         if (item.latitude != 0 && item.longitude != 0) {
