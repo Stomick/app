@@ -24,7 +24,7 @@ export class SportCenterService {
 
   constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
-    this.position = { lat: 0, lng: 0 };
+    this.position = {lat: 0, lng: 0};
     this.getPosition();
   }
 
@@ -36,9 +36,11 @@ export class SportCenterService {
     return this.http
       .get(this.API_URL + 'bookings/schedule?id=' + id + '&startDate=' + startDate + '&endDate=' + endDate, {headers: this.headers}).map(this.parseData)
   }
-  ionViewDidLoad(){
+
+  ionViewDidLoad() {
 
   }
+
   /**
    * GET request
    * @param date
@@ -59,29 +61,16 @@ export class SportCenterService {
       .catch(this.handleError);
   };
 
-  getYandexPoint(arrCoord){
+  getYandexPoint(arrCoord) {
     this.position = {lat: arrCoord[0], lng: arrCoord[1]};
-    window.console.log(this.position, 'getYand');
   }
-  private getPosition() {
-    if (ymaps.ready()) {
-      ymaps.geolocation.get({
-        // Зададим способ определения геолокации
-        // на основе ip пользователя.
-        provider: 'yandex',
-        // Включим автоматическое геокодирование результата.
-        autoReverseGeocode: true
-      }).then((result) => {
-        let arrCoord = result.geoObjects.position;
-        return this.getYandexPoint(result.geoObjects.position)
 
-      });
-    }
-    else if (navigator.geolocation) {
+  private getPosition() {
+    if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           window.console.log(position, 'navi');
-          return this.getYandexPoint({0:position.coords.latitude,1:position.coords.longitude});
+          return this.getYandexPoint({0: position.coords.latitude, 1: position.coords.longitude});
         },
         (error) => {
         },
@@ -93,21 +82,33 @@ export class SportCenterService {
       );
     }
     else if (this.geolocation) {
-       this.geolocation.getCurrentPosition().then(
+      this.geolocation.getCurrentPosition().then(
         (res) => {
           window.console.log(res, 'geo');
-          return  this.getYandexPoint({0:res.coords.latitude,1:res.coords.longitude});
-
+          return this.getYandexPoint({0: res.coords.latitude, 1: res.coords.longitude});
         }).catch(error => {
         window.console.log(error);
       });
-    } else {
-      const watch = this.geolocation.watchPosition().subscribe(pos => {
-        window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
-        return this.getYandexPoint({0:pos.coords.latitude,1:pos.coords.longitude});
+    }
+    else if (ymaps.geolocation) {
+      ymaps.geolocation.get({
+        // Зададим способ определения геолокации
+        // на основе ip пользователя.
+        provider: 'yandex',
+        // Включим автоматическое геокодирование результата.
+        autoReverseGeocode: true
+      }).then((result) => {
+        let arrCoord = result.geoObjects.position;
+        window.console.log(this.position, 'getYand');
+        return this.getYandexPoint(result.geoObjects.position)
 
       });
-
+    }
+    else {
+      const watch = this.geolocation.watchPosition().subscribe(pos => {
+        window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
+        return this.getYandexPoint({0: pos.coords.latitude, 1: pos.coords.longitude});
+      });
       // to stop watching
       watch.unsubscribe();
     }

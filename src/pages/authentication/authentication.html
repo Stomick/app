@@ -19,7 +19,7 @@
     </ion-input>
     <label class="phone-label"></label>
     <ion-footer class="footer">
-      <button class="submit-button" *ngIf="complexForm.valid" (click)="submitForm(complexForm)" ion-button full>Продолжить</button>
+      <input type="button" class="submit-button" *ngIf="complexForm.valid" (click)="submitForm(complexForm)" ion-button full value="Продолжить" />
     </ion-footer>
   </form>
 </ion-content>

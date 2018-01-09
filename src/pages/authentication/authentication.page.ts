@@ -129,8 +129,10 @@ export class AuthenticationPage {
   }
 
   resizeContent(event) : void {
+    window.console.log(event);
       if (event.target.tagName === 'INPUT') {
-        document.body.scrollTop = 0;
+        window.console.log(event.target.tagName);
+        //document.body.scrollTop = 0;
       }
   }
 

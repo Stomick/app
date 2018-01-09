@@ -74,10 +74,12 @@ page-authentication {
   }
 
   .submit-button {
-    width: 80%;
-    padding: 20px 0;
+
+    height: 46px;
+    width: 25%;
+    /* padding: 20px 0; */
     text-transform: none;
-    font-size: 20px;
+    font-size: 23px;
     margin: 0 auto;
     background: $grafient-button;
     border-radius: 25px;
