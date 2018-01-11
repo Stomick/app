@@ -23,6 +23,10 @@ export class SportCenterService {
 
 
   constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
+    this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Access-Control-Allow-Headers', "*");
+    this.headers.append('Access-Control-Allow-Credentials','true');
     this.headers.append("Authorization", `Bearer ${this.token}`);
     this.position = {lat: 0, lng: 0};
     this.getPosition();

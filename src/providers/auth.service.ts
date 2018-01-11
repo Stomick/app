@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import * as config from '../config/prod.config';
-import {Http} from "@angular/http";
+import {Http , Headers} from "@angular/http";
 import {Storage} from '@ionic/storage';
 import 'rxjs';
 import {User} from "../models/user.model";
@@ -10,9 +10,14 @@ import {User} from "../models/user.model";
 export class AuthService {
   private API_URL: string = config.default.API_PATH;
   storage = new Storage(['localstorage']);
+  private headers: Headers = new Headers();
   user: User;
 
   constructor(private http: Http) {
+    this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    this.headers.append('Content-Type', 'application/json');
+    this.headers.append('Access-Control-Allow-Headers', "*");
+    this.headers.append('Access-Control-Allow-Credentials','true');
     this.storage.get("currentUser").then((res : User) => {
       this.user = res;
     });
@@ -43,7 +48,7 @@ export class AuthService {
    */
   public login(name: string, phone: string): Observable<string> {
 
-    return this.http.post((this.API_URL + "auth/registration"), {name: name, phone: phone})
+    return this.http.post((this.API_URL + "auth/registration"), {name: name, phone: phone},{headers: this.headers})
       .map((res) => {
         let code = res.json();
         return code;
@@ -52,7 +57,7 @@ export class AuthService {
 
   public checkSMSCode(user: User): Observable<boolean> {
 
-    return this.http.post(`${this.API_URL}auth/signin`, {code: user.code}).map((res) => {
+    return this.http.post(`${this.API_URL}auth/signin`, {code: user.code} , {headers: this.headers}).map((res) => {
       user.setToken(res.json());
       this.saveUser(user);
 
