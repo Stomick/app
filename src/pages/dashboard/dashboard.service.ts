@@ -14,9 +14,11 @@ export class DashboardService {
   private token: string = AuthService.getCurrentUser().token;
 
   constructor(private  http: Http) {
-    this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+
+   /* this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Headers', "*");
+    */
     this.headers.append("Authorization", `Bearer ${this.token}`);
   }
 

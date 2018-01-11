@@ -14,10 +14,11 @@ export class AuthService {
   user: User;
 
   constructor(private http: Http) {
-    this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
+   /* this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Headers', "*");
-    this.storage.get("currentUser").then((res : User) => {
+   */
+   this.storage.get("currentUser").then((res : User) => {
       this.user = res;
     });
   }
