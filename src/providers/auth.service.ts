@@ -17,7 +17,6 @@ export class AuthService {
     this.headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headers.append('Content-Type', 'application/json');
     this.headers.append('Access-Control-Allow-Headers', "*");
-    this.headers.append('Access-Control-Allow-Credentials','true');
     this.storage.get("currentUser").then((res : User) => {
       this.user = res;
     });
