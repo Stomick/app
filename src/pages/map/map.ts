@@ -36,12 +36,16 @@ export class MapPage {
       this.point.lat = this.place.latitude;
       this.point.lng = this.place.longitude;
 
-      ymaps.ready(() => {
-        this.drawPlace(this.point, this.place.imageLogo)
-      });
+      if (ymaps) {
+        ymaps.ready(() => {
+          this.drawPlace(this.point, this.place.imageLogo)
+        });
 
-    } else if (this.pointB != null) {
-      ymaps.ready(() => {this.drawRoute() });
+      } else if (this.pointB != null && ymaps) {
+        ymaps.ready(() => {
+          this.drawRoute()
+        });
+      }
     }
   }
 
@@ -49,17 +53,19 @@ export class MapPage {
    * draws single placemark on map
    */
   drawPlace(point: GeoPoint, logoURL ?: string): void {
-    this.map = new ymaps.Map('map1', {
-      center: [point.lat, point.lng], // Москва
-      zoom: 12,
-      controls: []
-    }, {
-      searchControlProvider: 'yandex#search'
-    });
+    if (ymaps) {
+      this.map = new ymaps.Map('map1', {
+        center: [point.lat, point.lng], // Москва
+        zoom: 12,
+        controls: []
+      }, {
+        searchControlProvider: 'yandex#search'
+      });
 
-    this.map.controls.add('zoomControl');
+      this.map.controls.add('zoomControl');
 
-    this.map.geoObjects.add(this.createPlacemark(point , logoURL));
+      this.map.geoObjects.add(this.createPlacemark(point, logoURL));
+    }
   }
 
   /**
@@ -68,29 +74,31 @@ export class MapPage {
   drawRoute(): void {
 
     console.debug('darw route');
-    this.map = new ymaps.Map('map1', {
-      center: [55.734876, 37.59308], // Москва will be owerride by map route generator
-      zoom: 5,
-      controls: []
-    }, {
-      searchControlProvider: 'yandex#search'
-    });
+    if (ymaps) {
+      this.map = new ymaps.Map('map1', {
+        center: [55.734876, 37.59308], // Москва will be owerride by map route generator
+        zoom: 5,
+        controls: []
+      }, {
+        searchControlProvider: 'yandex#search'
+      });
 
-    this.map.controls.add('zoomControl');
+      this.map.controls.add('zoomControl');
 
-    let multiRoute = new ymaps.multiRouter.MultiRoute({
-      // Описание опорных точек мультимаршрута.
-      referencePoints: [
-        [this.sportCenter.position.lat, this.sportCenter.position.lng],
-        [this.pointB.lat, this.pointB.lng]
-      ],
-      params: {
-        results: 3
-      }
-    }, {
-      boundsAutoApply: true
-    });
-    this.map.geoObjects.add(multiRoute);
+      let multiRoute = new ymaps.multiRouter.MultiRoute({
+        // Описание опорных точек мультимаршрута.
+        referencePoints: [
+          [this.sportCenter.position.lat, this.sportCenter.position.lng],
+          [this.pointB.lat, this.pointB.lng]
+        ],
+        params: {
+          results: 3
+        }
+      }, {
+        boundsAutoApply: true
+      });
+      this.map.geoObjects.add(multiRoute);
+    }
   }
 
   /**
@@ -99,14 +107,16 @@ export class MapPage {
    * @return {ymaps.Placemark}
    */
   createPlacemark(point: GeoPoint, logoURL ?: string): any {
-    return new ymaps.Placemark([point.lat, point.lng], {}, {
-      iconImageHref: logoURL || 'assets/images/map-marker.png',
-      preset: 'islands#governmentCircleIcon',
-      iconLayout: 'default#image',
-      iconImageSize: [40, 40],
-      iconImageOffset: [-20, -20],
-      iconColor: '#3b5998'
-    });
+    if (ymaps){
+      return new ymaps.Placemark([point.lat, point.lng], {}, {
+        iconImageHref: logoURL || 'assets/images/map-marker.png',
+        preset: 'islands#governmentCircleIcon',
+        iconLayout: 'default#image',
+        iconImageSize: [40, 40],
+        iconImageOffset: [-20, -20],
+        iconColor: '#3b5998'
+      });
+    }
   }
 }
 

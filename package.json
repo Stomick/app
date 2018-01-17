@@ -31,11 +31,12 @@
     "@types/jspdf": "^1.1.31",
     "angular2-text-mask": "^5.0.0",
     "cordova-android": "6.2.3",
-    "cordova-browser": "^5.0.2",
+    "cordova-browser": "5.0.3",
     "cordova-ios": "^4.5.4",
     "cordova-plugin-console": "^1.1.0",
     "cordova-plugin-device": "^1.1.6",
     "cordova-plugin-geolocation": "^3.0.0",
+    "cordova-plugin-request-location-accuracy": "^2.2.2",
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-statusbar": "^2.2.3",
     "cordova-plugin-whitelist": "^1.3.2",
@@ -51,8 +52,11 @@
     "jspdf": "^1.3.3",
     "lodash": "^4.17.4",
     "moment": "^2.17.1",
+    "nativescript-geolocation": "^4.2.2",
     "rxjs": "^5.0.0-beta.12",
     "sw-toolbox": "^3.6.0",
+    "tns": "^0.1.0",
+    "tns-core-modules": "4.0.0-rc-2017.12.18.1",
     "zone.js": "^0.8.5"
   },
   "devDependencies": {
@@ -79,12 +83,22 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-whitelist": {},
       "ionic-plugin-keyboard": {},
-      "cordova-plugin-x-socialsharing": {}
+      "cordova-plugin-x-socialsharing": {},
+      "cordova-plugin-request-location-accuracy": {}
     },
     "platforms": [
       "android",
       "browser",
       "ios"
     ]
+  },
+  "nativescript": {
+    "id": "org.nativescript.app",
+    "tns-ios": {
+      "version": "4.0.0-2018-01-17-01"
+    },
+    "tns-android": {
+      "version": "4.0.0-2018-01-04-01"
+    }
   }
 }

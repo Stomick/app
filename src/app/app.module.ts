@@ -26,6 +26,7 @@ import {Geolocation} from '@ionic-native/geolocation';
 import {SocialSharing} from '@ionic-native/social-sharing';
 import {SocialShare} from "../components/SocialShare/SocicalShare";
 
+
 @NgModule({
   declarations: [
     ModalPage,
@@ -46,7 +47,7 @@ import {SocialShare} from "../components/SocialShare/SocicalShare";
     DistancePlaceSort,
     MapPage,
     PaymentIFramePage,
-    OfferPage
+    OfferPage,
   ],
   imports: [
     FormsModule,

@@ -8,11 +8,10 @@ import {AuthService} from "./auth.service";
 import {Order} from "../models/order.model";
 import {Geolocation} from '@ionic-native/geolocation';
 import {Platform} from 'ionic-angular';
-
 declare var ymaps;
 
 @Injectable()
-export class SportCenterService {
+export class SportCenterService{
 
   private API_URL: string = config.default.API_PATH;
   private API_ERR: string = config.default.API_ERROR;
@@ -20,7 +19,7 @@ export class SportCenterService {
   private token: string = AuthService.getCurrentUser().token;
   public position: { lat: number, lng: number };
   public testPos: any;
-
+  public geoLoc: any;
 
   constructor(private  http: Http, private platform: Platform, public geolocation: Geolocation) {
     this.headers.append("Authorization", `Bearer ${this.token}`);
@@ -35,10 +34,6 @@ export class SportCenterService {
   public schedule(id, startDate, endDate) {
     return this.http
       .get(this.API_URL + 'bookings/schedule?id=' + id + '&startDate=' + startDate + '&endDate=' + endDate, {headers: this.headers}).map(this.parseData)
-  }
-
-  ionViewDidLoad() {
-
   }
 
   /**
@@ -69,15 +64,17 @@ export class SportCenterService {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
+
+          var location_timeout = setTimeout(function () {
+            window.console.log('test loc');
+          }, 5000);
           window.console.log(position, 'navi');
           return this.getYandexPoint({0: position.coords.latitude, 1: position.coords.longitude});
         },
         (error) => {
         },
         {
-          enableHighAccuracy: true,
-          timeout: 50000,
-          maximumAge: 0
+           maximumAge: 3000, timeout: 50000, enableHighAccuracy: true
         }
       );
     }
@@ -85,26 +82,15 @@ export class SportCenterService {
       this.geolocation.getCurrentPosition().then(
         (res) => {
           window.console.log(res, 'geo');
+          var location_timeout = setTimeout(function () {
+
+          }, 5000);
           return this.getYandexPoint({0: res.coords.latitude, 1: res.coords.longitude});
         }).catch(error => {
         window.console.log(error);
       });
     }
-    else if (ymaps.geolocation) {
-      ymaps.geolocation.get({
-        // Зададим способ определения геолокации
-        // на основе ip пользователя.
-        provider: 'yandex',
-        // Включим автоматическое геокодирование результата.
-        autoReverseGeocode: true
-      }).then((result) => {
-        let arrCoord = result.geoObjects.position;
-        window.console.log(this.position, 'getYand');
-        return this.getYandexPoint(result.geoObjects.position)
-
-      });
-    }
-    else {
+    else  {
       const watch = this.geolocation.watchPosition().subscribe(pos => {
         window.console.log('lats: ' + pos.coords.latitude + ', lons: ' + pos.coords.longitude);
         return this.getYandexPoint({0: pos.coords.latitude, 1: pos.coords.longitude});
@@ -224,8 +210,16 @@ export class SportCenterService {
     if (this.position) {
       arr.forEach((item) => {
         if (item.latitude != 0 && item.longitude != 0) {
-          item.distance =
-            this.getDistanceFromLatLonInKm(this.position.lat, this.position.lng, item.latitude, item.longitude);
+          if(!ymaps) {
+            item.distance =
+              this.getDistanceFromLatLonInKm(this.position.lat, this.position.lng, item.latitude, item.longitude);
+          }
+          else{
+            //let dist = ymaps.route([this.position.lat, this.position.lng], [item.latitude, item.longitude]);
+            //window.console.log(dist);
+            item.distance =
+              this.getDistanceFromLatLonInKm(this.position.lat, this.position.lng, item.latitude, item.longitude);
+          }
         } else {
           item.distance = 0;
         }

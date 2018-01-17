@@ -31,10 +31,13 @@ export class YandexMap implements OnInit, OnChanges {
     //я думаю что по замыслу предыдущих разработчиков надо было получать геолокацию
     //и показывать текущую позицию но что-то пошло не так, фактически всегда стоял центр москвы
     // мб челы натолкнулись на то что методы Geolocation не работают на андройде 4.4
-    ymaps.ready(() => {
-      this.loadMap(55.76, 37.64)
-      this.drawPointers();
-    });
+    if (ymaps) {
+
+      ymaps.ready(() => {
+        this.loadMap(55.76, 37.64)
+        this.drawPointers();
+      });
+    }
     /*Geolocation.getCurrentPosition().then((resp) => {
         //ymaps.ready(this.loadMap(resp.coords.latitude, resp.coords.longitude));
         ymaps.ready(() => {
@@ -58,22 +61,22 @@ export class YandexMap implements OnInit, OnChanges {
     }
   }
 
-
   loadMap(latitude = 55.76, longitude = 37.64): void {
-    this.map = new ymaps.Map('map', {
-      center: [latitude, longitude], // Москва
-      zoom: 9,
-      controls: []
-    }, {
-      searchControlProvider: 'yandex#search'
-    });
+    if (ymaps) {
+      this.map = new ymaps.Map('map', {
+        center: [latitude, longitude], // Москва
+        zoom: 9,
+        controls: []
+      }, {
+        searchControlProvider: 'yandex#search'
+      });
 
-    this.map.controls.add('zoomControl');
+      this.map.controls.add('zoomControl');
 
-    this.yamapsLoad = true;
-    //let maps = new ymaps.Map(ymaps.jQuery("#map")[0]), center;
+      this.yamapsLoad = true;
+      //let maps = new ymaps.Map(ymaps.jQuery("#map")[0]), center;
+    }
   }
-
   drawPointers() {
     if (this.places != null) {
       this.places.forEach((place) => {
@@ -101,9 +104,9 @@ export class YandexMap implements OnInit, OnChanges {
    * @return {ymaps.Placemark}
    */
   createPlacemark(place: Place, eventEmitter: any): any {
-
-    let placemark = new ymaps.Placemark([place.latitude, place.longitude],  {
-      balloonContent: `<div class="balloon">
+    if (ymaps) {
+      let placemark = new ymaps.Placemark([place.latitude, place.longitude], {
+        balloonContent: `<div class="balloon">
                             <div class="balloon__col1">
                               <img class="balloon__logo" src="${place.imageLogo}">
                             </div>
@@ -117,27 +120,28 @@ export class YandexMap implements OnInit, OnChanges {
                        <div class="balloon__button">
                           Выбрать площадку
                        </div>`
-    }, {
-      preset: 'islands#governmentCircleIcon',
-      iconLayout: 'default#image',
-      iconImageHref: 'http://weev.ru/assets/images/google-marker.png',
-      iconColor: '#3b5998'
-    });
+      }, {
+        preset: 'islands#governmentCircleIcon',
+        iconLayout: 'default#image',
+        iconImageHref: 'http://weev.ru/assets/images/google-marker.png',
+        iconColor: '#3b5998'
+      });
 
-    // addign property
-    // placemark.balloon.letMeSportPlace = place;
+      // addign property
+      // placemark.balloon.letMeSportPlace = place;
 
-    //adding events for placemark redirect
-    placemark.balloon.events.add('click', function (e) {
-      // e.preventDefault();
-      // e.stopPropagation();
-      // eventEmitter.emit(e.get('target').balloon.letMeSportPlace);
-      eventEmitter.emit(place);
-      console.log(e);
-      console.log(e.get('target').balloon);
-      // console.log(e.get('domEvent').originalEvent.button);
-    });
+      //adding events for placemark redirect
+      placemark.balloon.events.add('click', function (e) {
+        // e.preventDefault();
+        // e.stopPropagation();
+        // eventEmitter.emit(e.get('target').balloon.letMeSportPlace);
+        eventEmitter.emit(place);
+        console.log(e);
+        console.log(e.get('target').balloon);
+        // console.log(e.get('domEvent').originalEvent.button);
+      });
 
-    return placemark;
+      return placemark;
+    }
   }
 }
