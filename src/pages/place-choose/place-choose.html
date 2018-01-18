@@ -56,7 +56,7 @@
               <i class="img-icon img-icon_map-point img-icon_place-list"></i>
               <span class="price_padding">{{place.address}}</span>
             </p>
-            <p *ngIf="place.distance != null" class="distance">{{place.distance | distanceKmPipe}} км от Вас</p>
+            <p *ngIf="place.distance != null && place.distance != 0" class="distance">{{place.distance | distanceKmPipe}} км от Вас</p>
           </div>
         </div>
 

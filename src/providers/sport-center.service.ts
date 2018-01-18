@@ -209,7 +209,7 @@ export class SportCenterService{
     console.log(this.position);
     if (this.position) {
       arr.forEach((item) => {
-        if (item.latitude != 0 && item.longitude != 0) {
+        if (item.latitude != 0 && item.longitude != 0 && this.position.lng !=0 && this.position.lat != 0) {
           if(!ymaps) {
             item.distance =
               this.getDistanceFromLatLonInKm(this.position.lat, this.position.lng, item.latitude, item.longitude);
