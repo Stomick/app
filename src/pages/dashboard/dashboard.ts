@@ -42,9 +42,8 @@ export class DashboardPage implements OnInit {
               public auth: AuthService,
               public dashBoardService: DashboardService,
               public loadingCtrl: LoadingController) {
-
-    this.socialShare = new SocialShare();
     this.user = AuthService.getCurrentUser();
+    this.socialShare = new SocialShare();
   }
 
 
@@ -56,8 +55,12 @@ export class DashboardPage implements OnInit {
 
   }
 
+  socialButtonShare(socialButton){
+    this.socialShare.pressButton(socialButton);
+  }
+
   emailToSupport() {
-    this.socialShare.sendSuppotMail();
+    this.socialShare.sendSuppotMail(this.user);
   }
 
   inviteFriend() {

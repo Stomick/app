@@ -10,9 +10,8 @@ export class SocialShare extends SocialSharing {
     super();
   }
 
-  public sendSuppotMail() {
-    window.console.log('there');
-    return this.shareViaEmail(socialText.email, socialText.email, [socialText.suppotEmail]);
+  public sendSuppotMail(user = null) {
+    return this.shareViaEmail('Опишите свою проблему', user.name + ' ' + user.phone, [socialText.suppotEmail]);
   }
 
   public sendMailBooking(id: string, booking: Booking, node: ElementRef) {
@@ -39,6 +38,27 @@ export class SocialShare extends SocialSharing {
    * Send sms with
    * @return {Promise<any>}
    */
+  public pressButton(socialButton){
+    switch (socialButton){
+      case 'facebook':
+        this.shareViaFacebookWithPasteMessageHint('Message via Facebook',
+          null /* img */, null /* url */, 'Paste it dude!');
+        window.console.log('facebook');
+        break;
+      case 'instagram':
+        window.console.log('instagram');
+        break;
+      case 'whatsapp':
+        window.console.log('whatsapp');
+        break;
+      case 'telegram':
+        window.console.log('telegram');
+        break;
+      case 'vk':
+        window.console.log('vk');
+        break;
+    }
+  }
   public shareToFriend(date: Date) {
 
     let text =

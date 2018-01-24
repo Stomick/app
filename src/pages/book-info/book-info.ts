@@ -9,7 +9,7 @@ import * as  configURL from "../../config/prod.config";
 import {InAppBrowser} from '@ionic-native/in-app-browser';
 import {PaymentIFramePage} from "../payment-i-frame/payment-i-frame";
 import {DashboardPage} from "../dashboard/dashboard";
-
+import {AuthService} from "../../providers/auth.service";
 @Component({
   selector: 'page-book-info',
   templateUrl: 'book-info.html'
@@ -122,7 +122,7 @@ export class BookInfoPage {
   }
 
   sendSuppotMail(): void {
-    this.socialShare.sendSuppotMail();
+    this.socialShare.sendSuppotMail(AuthService.getCurrentUser());
   }
 
   checkPayment(): void {

@@ -1,5 +1,5 @@
 export const socialText = {
-  "suppotEmail": "mk@weev.ru",
+  "suppotEmail": "info@weev.ru",
   "email": "Weev hello email",
   "userMessage": "Я забронировал площадку через weev ссылка",
   "invitationSubject": "Бронирование площадки",
@@ -12,7 +12,7 @@ export const socialText = {
     subject: "Обращение в службу поддержки",
     url: "",
     chooserTitle: "",
-    to: ["mk@weev.ru"]
+    to: ["info@weev.ru"]
   },
 
   "sendBookToEmail" : {

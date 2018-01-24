@@ -21,8 +21,6 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <config-file parent="/*" target="AndroidManifest.xml">
-        </config-file>
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
         <icon density="mdpi" src="resources/android/icon/drawable-mdpi-icon.png" />
         <icon density="hdpi" src="resources/android/icon/drawable-hdpi-icon.png" />
@@ -41,6 +39,13 @@
         <allow-intent href="itms-apps:*" />
         <config-file parent="NSLocationWhenInUseUsageDescription" target="*-Info.plist">
             <string>Для определения расстояния до центра</string>
+        </config-file>
+        <config-file parent="LSApplicationQueriesSchemes" platform="ios" target="*-Info.plist">
+            <array>
+                <string>Whatsapp</string>
+                <string>Telegram</string>
+                <string>FaceBook</string>
+            </array>
         </config-file>
         <icon height="57" src="resources/ios/icon/icon.png" width="57" />
         <icon height="114" src="resources/ios/icon/icon@2x.png" width="114" />
@@ -90,9 +95,9 @@
         <param name="android-package" value="nl.xservices.plugins.SocialSharing" />
     </feature>
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
-    <engine name="android" spec="6.2.3" />
     <engine name="browser" spec="5.0.3" />
     <engine name="ios" spec="^4.5.4" />
+    <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-geolocation" spec="^3.0.0" />
     <plugin name="cordova-plugin-console" spec="^1.1.0" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />

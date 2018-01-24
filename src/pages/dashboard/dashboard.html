@@ -18,6 +18,17 @@
       <p>Здесь будут отображены ваши бронирования</p>
       <p class="button button__blue action-button" (click)="emailToSupport()">Связаться со службой поддержки</p>
       <p class="button button__blue action-button" (click)="inviteFriend()">Пригласить друга</p>
+      <div class="col-xl-12">
+        <button (click)="socialButtonShare('whatsapp')" class="button-light social col-xl-4">
+          <ion-icon name="logo-whatsapp"></ion-icon>
+        </button>
+        <button (click)="socialButtonShare('facebook')" class="button-light social col-xl-4">
+          <ion-icon name="logo-facebook"></ion-icon>
+        </button>
+        <button (click)="socialButtonShare('instagram')" class="button-light social col-xl-4">
+          <ion-icon name="logo-instagram"></ion-icon>
+        </button>
+      </div>
     </section>
   </div>
 
