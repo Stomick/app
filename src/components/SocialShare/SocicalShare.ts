@@ -46,9 +46,11 @@ export class SocialShare extends SocialSharing {
         window.console.log('facebook');
         break;
       case 'instagram':
+        this.shareViaInstagram('Message via Instagram', 'https://www.google.nl/images/srpr/logo4w.png');
         window.console.log('instagram');
         break;
       case 'whatsapp':
+        this.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */);
         window.console.log('whatsapp');
         break;
       case 'telegram':
