@@ -3,6 +3,7 @@ import {socialText} from './socialText';
 import {Booking} from "../../models/Booking";
 import {PDFGenerator} from "../PDFGenerator/PDFGenerator";
 import {ElementRef} from "@angular/core";
+import {messageType} from "tns-core-modules/trace";
 
 export class SocialShare extends SocialSharing {
 
@@ -41,16 +42,19 @@ export class SocialShare extends SocialSharing {
   public pressButton(socialButton){
     switch (socialButton){
       case 'facebook':
-        this.shareViaFacebookWithPasteMessageHint('Message via Facebook',
-          null /* img */, null /* url */, 'Paste it dude!');
+        this.shareViaFacebookWithPasteMessageHint('Я арендовал спортивную площадку через Weev за два клика!',
+          'https://ibb.co/fsFrUG', 'https://weev.ru' /* url */, '');
         window.console.log('facebook');
         break;
       case 'instagram':
-        this.shareViaInstagram('Message via Instagram', 'https://www.google.nl/images/srpr/logo4w.png');
-        window.console.log('instagram');
+        this.shareViaInstagram('Я арендовал спортивную площадку через Weev за два клика! #weev#спорт#бронирование', 'https://ibb.co/fsFrUG')
+          .then(()=>{window.console.log('instagram')})
+          .catch((error)=>{
+            window.console.log(error);
+          });
         break;
       case 'whatsapp':
-        this.shareViaWhatsApp('Message via WhatsApp', null /* img */, null /* url */);
+        this.shareViaWhatsApp('Я арендовал спортивную площадку через Weev за два клика!', 'https://ibb.co/fsFrUG' /* img */, 'https://weev.ru' /* url */);
         window.console.log('whatsapp');
         break;
       case 'telegram':
