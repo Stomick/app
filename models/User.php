@@ -268,7 +268,7 @@ class User extends ActiveRecord implements IdentityInterface
             Yii::$app->params['sms']['password'],
             Yii::$app->params['sms']['api_id']
         ));
-        $message = 'Для вас создан аккаунт на портале Weev.ru. Подробности в почтовом ящике ' . $user->email;
+        $message = 'Для вас создан аккаунт на портале Weev.club. Подробности в почтовом ящике ' . $user->email;
         $sms = new Sms($user->phone, $message);
         $sms->from = 'WEEV';
 

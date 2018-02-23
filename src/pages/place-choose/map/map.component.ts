@@ -123,7 +123,7 @@ export class YandexMap implements OnInit, OnChanges {
       }, {
         preset: 'islands#governmentCircleIcon',
         iconLayout: 'default#image',
-        iconImageHref: 'http://weev.ru/assets/images/google-marker.png',
+        iconImageHref: 'http://weev.club/assets/images/google-marker.png',
         iconColor: '#3b5998'
       });
 

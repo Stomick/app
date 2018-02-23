@@ -4,8 +4,8 @@
 /* @var  $password string */
 
 ?>
-<p><?= $model->name; ?>, для вас создан аккаунт администратора на портале Weev.ru</p>
-<p>Личный кабинет доступен по ссылке http://weev.ru/login/</p>
+<p><?= $model->name; ?>, для вас создан аккаунт администратора на портале Weev.club</p>
+<p>Личный кабинет доступен по ссылке http://admin.weev.club/</p>
 <p>
     Login: <?= $model->email; ?>
     <br>
