@@ -77,7 +77,48 @@ export class PlacePage implements OnInit {
       this.maxDate = moment(new Date(today.getFullYear(), today.getMonth() + 2, today.getDay() - 1)).format();
     }
   }
+  updatePlace(){
+    let loading = this.loadingCtrl.create({
+      content: "Пожалуйста, подождите..."
+    });
+    loading.present();
+    this.place = this.navParams.get("place");
+    // this.oldTime = this.navParams.get("time");
 
+    /**
+     * updating sport center information
+     */
+    // this.sportCenters.checkSportCenter(new Date(this.time), this.place)
+    //   .subscribe((res) => {
+    //     loading.dismissAll();
+
+    //     this.place = res;
+    //     this.time = this.navParams.get("time");
+
+    //     // setting defaults to form radio button
+    //     this.bookSelect['playground'] = this.place.playingFields[0].name;
+
+    //   }, () => {
+    //     loading.dismissAll();
+    //     let toast = this.toastCtrl.create({
+    //       message: 'Ошибка загрузки',
+    //       duration: 2000
+    //     });
+    //     toast.present();
+    //     this.navCtrl.pop();
+    //   });
+
+    // HARDCODE mock places
+    setTimeout(() => {
+      loading.dismissAll();
+      this.place = this.place;
+
+      this.initDatesTimes();
+
+      this.bookSelect['playground'] = this.place.playingFields[0].name;
+    }, 1000);
+
+  }
   ngOnInit(): void {
 
     let loading = this.loadingCtrl.create({
@@ -187,7 +228,7 @@ export class PlacePage implements OnInit {
    * check time avaliability for this sport center
    */
   dateChange() {
-
+    this.updatePlace();
     const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.time, 'YYYY-MM-DD HH:mm').format();
     console.log('time', time);
 
@@ -232,6 +273,7 @@ export class PlacePage implements OnInit {
       ind++;
     });
     this.sumbDisable = true;
+    this.updatePrice();
   }
 
   endrangeTime() {
