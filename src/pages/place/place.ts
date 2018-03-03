@@ -77,48 +77,7 @@ export class PlacePage implements OnInit {
       this.maxDate = moment(new Date(today.getFullYear(), today.getMonth() + 2, today.getDay() - 1)).format();
     }
   }
-  updatePlace(){
-    let loading = this.loadingCtrl.create({
-      content: "Пожалуйста, подождите..."
-    });
-    loading.present();
-    this.place = this.navParams.get("place");
-    // this.oldTime = this.navParams.get("time");
 
-    /**
-     * updating sport center information
-     */
-    // this.sportCenters.checkSportCenter(new Date(this.time), this.place)
-    //   .subscribe((res) => {
-    //     loading.dismissAll();
-
-    //     this.place = res;
-    //     this.time = this.navParams.get("time");
-
-    //     // setting defaults to form radio button
-    //     this.bookSelect['playground'] = this.place.playingFields[0].name;
-
-    //   }, () => {
-    //     loading.dismissAll();
-    //     let toast = this.toastCtrl.create({
-    //       message: 'Ошибка загрузки',
-    //       duration: 2000
-    //     });
-    //     toast.present();
-    //     this.navCtrl.pop();
-    //   });
-
-    // HARDCODE mock places
-    setTimeout(() => {
-      loading.dismissAll();
-      this.place = this.place;
-
-      this.initDatesTimes();
-
-      this.bookSelect['playground'] = this.place.playingFields[0].name;
-    }, 1000);
-
-  }
   ngOnInit(): void {
 
     let loading = this.loadingCtrl.create({
@@ -127,31 +86,6 @@ export class PlacePage implements OnInit {
     loading.present();
 
     this.place = this.navParams.get("place");
-    // this.oldTime = this.navParams.get("time");
-
-    /**
-     * updating sport center information
-     */
-    // this.sportCenters.checkSportCenter(new Date(this.time), this.place)
-    //   .subscribe((res) => {
-    //     loading.dismissAll();
-
-    //     this.place = res;
-    //     this.time = this.navParams.get("time");
-
-    //     // setting defaults to form radio button
-    //     this.bookSelect['playground'] = this.place.playingFields[0].name;
-
-    //   }, () => {
-    //     loading.dismissAll();
-    //     let toast = this.toastCtrl.create({
-    //       message: 'Ошибка загрузки',
-    //       duration: 2000
-    //     });
-    //     toast.present();
-    //     this.navCtrl.pop();
-    //   });
-
     // HARDCODE mock places
     setTimeout(() => {
       loading.dismissAll();
@@ -167,49 +101,33 @@ export class PlacePage implements OnInit {
   initDatesTimes() {
     const start = moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD').format('x');
     const end = moment(moment().format('YYYY-MM-DD'), 'YYYY-MM-DD').add(this.place.limit, 'days').format('x');
+    this.dateChange();
     this.sportCenters.schedule(this.place.id, start, end).subscribe((resposne) => {
       this.bookings = resposne.bookings;
       this.playingFields = resposne.playingFields;
       this.calculateDates(this.playingFields[0]);
       this.calculateTimes(this.minDate, this.playingFields[0]);
-      this.dateChange();
     });
   }
 
   calculateDates(playingField) {
     this.minDate = moment().format();
     this.maxDate = moment().add(this.place.limit, 'days').format();
-    this.date = this.minDate;
+    if(this.date != this.minDate) {
+      this.date = this.minDate;
+    }
   }
 
   calculateTimes(date, playingField) {
     const type = (moment(date).isoWeekday() !== 6 && moment(date).isoWeekday() !== 7) ? 'work' : 'weekend';
     this.times = [];
-    /*
-    reduce(playingField.availableTime, (memo, time) => {
-      const isAvailable = isUndefined(find(playingField.unavailableTimes, (item) => {
-        return moment(date).format('YYYY-MM-DD') == item.date && time.hour == item.hour
-      }));
-      const isntBooking = isUndefined(find(this.bookings, (item) => {
-        const bookingDate = moment.unix(item.bookingDate);
-        console.log(moment(date).format('YYYY-MM-DD'))
-        console.log(time.hour)
-        console.log('__________')
-        console.log(bookingDate.format('YYYY-MM-DD'))
-        console.log(bookingDate.hour())
-        console.log('_________________________________________________________________________')
-        return moment(date).format('YYYY-MM-DD') == bookingDate.format('YYYY-MM-DD') && time.hour == bookingDate.format('H')
-      }));
-      if (time.type === type && isAvailable && isntBooking) {
-        console.log('available hour', time.hour);
-        memo.push(moment(time.hour, 'H').format('HH:mm'));
-      }
-      return memo;
-    }, this.times);
-    this.time = this.times[0];
-    */
   }
 
+  calculateAllTimes(date){
+    if(this.minDate){
+
+    }
+  }
   /**
    * update footer price on page did enter
    */
@@ -228,7 +146,6 @@ export class PlacePage implements OnInit {
    * check time avaliability for this sport center
    */
   dateChange() {
-    this.updatePlace();
     const time = moment(moment(this.date).format('YYYY-MM-DD') + ' ' + this.time, 'YYYY-MM-DD HH:mm').format();
     console.log('time', time);
 
@@ -395,9 +312,7 @@ export class PlacePage implements OnInit {
   }
 
   updatePrice() {
-
     this.price = this.calcPrice(this.bookSelect);
-
   }
 
   private calcPrice(obj): number {

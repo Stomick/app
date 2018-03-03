@@ -64,9 +64,10 @@
         </div>
       </section>
       <ion-row>
+        <h3 class="place-info__playground">Выберете день</h3>
         <ion-col width-100>
           <ion-datetime #datepicker
-                        (ionChange)="dateChange(); calculateTimes(date, playingFields[0])"
+                        (ionChange)="dateChange(); calculateAllTimes(date)"
                         displayFormat="DD MMMM"
                         [min]="minDate"
                         [max]="maxDate"
